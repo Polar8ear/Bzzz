@@ -42,7 +42,7 @@
 	"shutdownAction": "stopCompose",
 
 	// Uncomment the next line to run commands after the container is created.
-	"postCreateCommand": "pnpm install && pnpm dev --host 0.0.0.0"
+	"postCreateCommand": "pnpm install"
 
 	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "devcontainer"
