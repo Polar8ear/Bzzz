@@ -1,0 +1,18 @@
+FROM node:20.11.1-alpine3.18
+
+VOLUME /usr/app
+
+# Set the Node environment to development to ensure all packages are installed
+ENV NODE_ENV development
+
+# Change our current working directory
+WORKDIR /usr/app
+
+RUN corepack enable pnpm
+
+# Expose port 3000 for the SvelteKit app and 24678 for Vite's HMR
+EXPOSE 5173
+EXPOSE 24678
+
+
+CMD ["pnpm", "install"]
