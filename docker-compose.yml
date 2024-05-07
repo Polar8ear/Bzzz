@@ -10,8 +10,6 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - bzzz-network
 
   sveltekit:
     build:
@@ -27,9 +25,6 @@ services:
       - mysql
     # tty: true
     command: pnpm dev --host=0.0.0.0
-    # network_mode: "host"
-    networks:
-      - bzzz-network
 
 networks:
-  bzzz-network: {}
+  bzzz-network:
