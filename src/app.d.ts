@@ -1,4 +1,4 @@
-import 'vite-plugin-pwa/pwa-assets';
+import 'vite-plugin-pwa/pwa-assets'
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -20,6 +20,4 @@ declare module 'virtual:pwa-register' {
 	export function registerSW(options?: RegisterSWOptions): (reloadPage?: boolean) => Promise<void>
 }
 
-
-
-export {};
+export {}

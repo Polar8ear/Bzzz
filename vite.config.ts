@@ -1,5 +1,5 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vitest/config';
+import { sveltekit } from '@sveltejs/kit/vite'
+import { defineConfig } from 'vitest/config'
 import { SvelteKitPWA } from '@vite-pwa/sveltekit'
 
 export default defineConfig({
@@ -23,8 +23,8 @@ export default defineConfig({
 				start_url: '/',
 				scope: '/',
 				display: 'standalone',
-				theme_color: "#ffffff",
-				background_color: "#ffffff",
+				theme_color: '#ffffff',
+				background_color: '#ffffff',
 				icons: [
 					{
 						src: '/pwa-64x64.png',
@@ -58,16 +58,14 @@ export default defineConfig({
 						form_factor: 'narrow',
 					},
 				],
-				protocol_handlers: [
-
-				]
+				protocol_handlers: [],
 			},
 			kit: {
 				includeVersionFile: true,
-			}
-		})
+			},
+		}),
 	],
 	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
+		include: ['src/**/*.{test,spec}.{js,ts}'],
 	},
-});
+})

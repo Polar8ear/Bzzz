@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { pwaInfo } from 'virtual:pwa-info';
-    import { pwaAssetsHead } from 'virtual:pwa-assets/head';
+	import { pwaInfo } from 'virtual:pwa-info'
+	import { pwaAssetsHead } from 'virtual:pwa-assets/head'
 
 	$: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : ''
-	if (typeof window !== 'undefined'){
+	if (typeof window !== 'undefined') {
 		import('../pwa')
 	}
 </script>
@@ -11,16 +11,16 @@
 <svelte:head>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html webManifest}
-    {#if pwaAssetsHead.themeColor}
-	<meta name="theme-color" content={pwaAssetsHead.themeColor.content} />
+	{#if pwaAssetsHead.themeColor}
+		<meta name="theme-color" content={pwaAssetsHead.themeColor.content} />
 	{/if}
 	{#each pwaAssetsHead.links as link}
-	<link {...link} />
+		<link {...link} />
 	{/each}
 </svelte:head>
 
 <main>
-    <div>{JSON.stringify(pwaAssetsHead)}</div>
+	<div>{JSON.stringify(pwaAssetsHead)}</div>
 	<slot />
 </main>
 
