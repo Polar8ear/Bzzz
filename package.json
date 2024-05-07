@@ -25,9 +25,11 @@
 		"@typescript-eslint/parser": "^7.0.0",
 		"@vite-pwa/assets-generator": "^0.2.4",
 		"@vite-pwa/sveltekit": "^0.4.0",
+		"drizzle-kit": "^0.20.17",
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.35.1",
+		"lucia": "^3.1.1",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"sharp": "^0.33.3",
@@ -41,5 +43,11 @@
 		"vitest": "^1.2.0",
 		"workbox-window": "^7.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@lucia-auth/adapter-drizzle": "^1.0.7",
+		"drizzle-orm": "^0.30.4",
+		"mysql2": "^3.9.3",
+		"oslo": "^1.1.3"
+	}
 }

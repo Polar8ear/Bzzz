@@ -9,14 +9,18 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+		interface Locals {
+			user: import('lucia').User | null
+			session: import('lucia').Session | null
+		}
 	}
 }
 
 declare module 'virtual:pwa-register' {
 	import type { RegisterSWOptions } from 'vite-plugin-pwa/types'
-  
+
 	export type { RegisterSWOptions }
-  
+
 	export function registerSW(options?: RegisterSWOptions): (reloadPage?: boolean) => Promise<void>
 }
 
