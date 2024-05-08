@@ -21,7 +21,6 @@
 </svelte:head>
 
 <main>
-	<div>{JSON.stringify(pwaAssetsHead)}</div>
 	<slot />
 </main>
 
