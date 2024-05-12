@@ -1,4 +1,4 @@
-import { db } from '@/lib/server/db'
+import { db } from '$lib/server/db'
 
 export async function load({ locals }) {
 	return {

@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm'
-import { mysqlTable, varchar, datetime, primaryKey } from 'drizzle-orm/mysql-core'
+import { pgTable, varchar, timestamp, primaryKey } from 'drizzle-orm/pg-core'
 
-export const users = mysqlTable('user', {
+export const users = pgTable('user', {
 	id: varchar('id', {
 		length: 255,
 	}).primaryKey(),
@@ -12,7 +12,7 @@ export const userRelations = relations(users, ({ many }) => ({
 	oAuthAccounts: many(oAuthAccounts),
 }))
 
-export const sessions = mysqlTable('session', {
+export const sessions = pgTable('session', {
 	id: varchar('id', {
 		length: 255,
 	}).primaryKey(),
@@ -21,10 +21,10 @@ export const sessions = mysqlTable('session', {
 	})
 		.notNull()
 		.references(() => users.id),
-	expiresAt: datetime('expires_at').notNull(),
+	expiresAt: timestamp('expires_at').notNull(),
 })
 
-export const oAuthAccounts = mysqlTable(
+export const oAuthAccounts = pgTable(
 	'oauth_account',
 	{
 		providerId: varchar('provider_id', {

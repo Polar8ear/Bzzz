@@ -4,10 +4,10 @@ import { generateIdFromEntropySize } from 'lucia'
 import { github, lucia } from '$lib/server/auth'
 
 import type { RequestEvent } from '@sveltejs/kit'
-import { db } from '@/lib/server/db'
-import { oAuthAccounts, users } from '@/db/schema'
+import { db } from '$lib/server/db'
+import { oAuthAccounts, users } from '$db/schema'
 import { and, eq } from 'drizzle-orm'
-import { log } from '@/lib/log'
+import { log } from '$lib/log'
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code')
