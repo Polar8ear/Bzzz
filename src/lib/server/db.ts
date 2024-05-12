@@ -1,19 +1,19 @@
-import { DrizzleMySQLAdapter } from '@lucia-auth/adapter-drizzle'
+import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle'
 
-import mysql from 'mysql2/promise'
-import { drizzle } from 'drizzle-orm/mysql2'
-import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from '$env/static/private'
+import { drizzle } from "drizzle-orm/aws-data-api/pg";
+import { RDSDataClient } from "@aws-sdk/client-rds-data";
+import { RDS } from "sst/node/rds";
 import * as schema from '$db/schema'
 
-const connection = await mysql.createConnection({
-	host: DB_HOST,
-	port: parseInt(DB_PORT),
-	password: DB_PASSWORD,
-	database: DB_DATABASE,
-	user: DB_USER,
-})
+const rdsClient = new RDSDataClient({
+});
 
-const db = drizzle(connection, { schema, mode: 'default' })
-const adapter = new DrizzleMySQLAdapter(db, schema.sessions, schema.users)
+const db = drizzle(rdsClient, {
+	database: RDS.db.defaultDatabaseName,
+	resourceArn: RDS.db.clusterArn,
+	secretArn: RDS.db.secretArn,
+	schema: schema,
+ })
+const adapter = new DrizzlePostgreSQLAdapter(db, schema.sessions, schema.users)
 
 export { adapter, db }
