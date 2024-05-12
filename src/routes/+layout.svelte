@@ -1,5 +1,5 @@
 <script lang="ts">
-	import "../app.css";
+	import '../app.css'
 	import { pwaInfo } from 'virtual:pwa-info'
 	import { pwaAssetsHead } from 'virtual:pwa-assets/head'
 
@@ -20,45 +20,22 @@
 	{/each}
 </svelte:head>
 
-<main>
-	<slot />
-</main>
+<div class="flex min-h-screen flex-col">
+	<header class="bg-slate-300 py-6">
+		<p class="ml-5 text-5xl font-bold">Bzzz</p>
+	</header>
 
-<footer>
-	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-</footer>
+	<main class="my-2 flex-grow">
+		<slot />
+	</main>
 
-<!-- {#await import('$lib/ReloadPrompt.svelte') then { default: ReloadPrompt }}
-	<ReloadPrompt />
-{/await} -->
+	<footer class="rounded-t-lg bg-slate-800 py-6 text-center text-slate-300">
+		<p class="font-bold">Bzzz Limited</p>
+	</footer>
+</div>
 
 <style>
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 1024px;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 40px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 40px 0;
-		}
+	:global(body) {
+		min-height: 100vh;
 	}
 </style>
