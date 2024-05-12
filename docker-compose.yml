@@ -21,6 +21,7 @@ services:
     volumes:
       - .:/usr/app
       - /usr/app/node_modules
+      - $HOME/.aws:/root/.aws
     depends_on:
       - mysql
     # tty: true
