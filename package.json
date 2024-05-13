@@ -3,22 +3,21 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "sst bind vite dev",
-		"build": "sst bind vite build",
-		"preview": "vite preview",
-		"test": "npm run test:integration && npm run test:unit",
+		"build": "sst shell vite build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --check . && eslint .",
+		"db": "sst shell drizzle-kit",
+		"db:studio": "sst shell drizzle-kit studio",
+		"dev": "sst dev vite dev",
 		"format": "prettier --write .",
-		"test:integration": "playwright test",
-		"test:unit": "vitest",
 		"generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 static/icon.svg",
-		"db:studio": "drizzle-kit studio",
-		"db:migrate": "sst shell drizzle-kit generate",
-		"db:push": "sst shell 'drizzle-kit push'",
+		"lint": "prettier --check . && eslint .",
+		"preview": "vite preview",
 		"sst:deploy": "sst deploy",
-		"sst:dev": "sst dev"
+		"sst:dev": "sst dev",
+		"test": "npm run test:integration && npm run test:unit",
+		"test:integration": "playwright test",
+		"test:unit": "vitest"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -42,12 +41,12 @@
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"prettier-plugin-tailwindcss": "^0.5.1",
-		"sharp": "^0.33.3",
+		"sharp": "0.33.2",
 		"sharp-ico": "^0.1.5",
-		"sst": "^2.41.5",
+		"sst": "2.41.5",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.0",
-		"svelte-kit-sst": "^2.41.5",
+		"svelte-kit-sst": "2.41.5",
 		"tailwindcss": "^3.4.1",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
@@ -66,20 +65,26 @@
 		"drizzle-orm": "^0.30.4",
 		"mysql2": "^3.9.3",
 		"oslo": "^1.1.3",
+		"postgres": "^3.4.4",
+		"sst": "ion",
+		"svelte-kit-sst": "2.41.5",
 		"tailwind-merge": "^2.3.0",
 		"tailwind-variants": "^0.2.1"
 	},
 	"pnpm": {
 		"supportedArchitectures": {
-			"os": [
-				"current"
-			],
 			"cpu": [
 				"x64",
 				"arm64"
 			],
 			"libc": [
+				"glibc",
 				"musl"
+			],
+			"os": [
+				"win32",
+				"linux",
+				"current"
 			]
 		}
 	}

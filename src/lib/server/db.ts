@@ -1,19 +1,18 @@
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle'
 
-import { drizzle } from "drizzle-orm/aws-data-api/pg";
-import { RDSDataClient } from "@aws-sdk/client-rds-data";
-import { RDS } from "sst/node/rds";
-import * as schema from '$db/schema'
+import { drizzle } from 'drizzle-orm/aws-data-api/pg'
+import { Resource } from 'sst'
+import * as schema from '../../db/schema'
+import { RDSDataClient } from '@aws-sdk/client-rds-data'
 
-const rdsClient = new RDSDataClient({
-});
+const rdsClient = new RDSDataClient({})
 
 const db = drizzle(rdsClient, {
-	database: RDS.db.defaultDatabaseName,
-	resourceArn: RDS.db.clusterArn,
-	secretArn: RDS.db.secretArn,
+	database: Resource.DB.database,
+	resourceArn: Resource.DB.clusterArn,
+	secretArn: Resource.DB.secretArn,
 	schema: schema,
- })
+})
 const adapter = new DrizzlePostgreSQLAdapter(db, schema.sessions, schema.users)
 
 export { adapter, db }

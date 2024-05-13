@@ -1,38 +1,56 @@
-# create-svelte
+# ❍
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Ion is a new engine for deploying SST apps. It uses Pulumi and Terraform, as opposed to CDK and CloudFormation. [Read the full announcement here](https://sst.dev/blog/moving-away-from-cdk.html).
 
-## Creating a project
+- **10x faster** deploys
+- Native **multi-region** support
+- No more cyclical dependencies
+- No stacks or stack resource limits
+- No CDK or npm package conflicts
+- Native support for **non-AWS** providers
 
-If you're seeing this, you've probably already done this step. Congrats!
+_Note: Ion is generally available and recommended for new SST users. We are working on a migration path for SST v2 users._
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Installation
 
-# create a new project in my-app
-npm create svelte@latest my-app
+```
+curl -fsSL https://ion.sst.dev/install | bash
 ```
 
-## Developing
+To use a package manager, [check out our docs](https://ion.sst.dev/docs/reference/cli/).
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+#### Manually
 
-```bash
-npm run dev
+Download the pre-compiled binaries from the [releases](https://github.com/sst/ion/releases/latest) page and copy to the desired location.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Get Started
 
-## Building
+Get started with your favorite framework:
 
-To create a production version of your app:
+- [Next.js](https://ion.sst.dev/docs/start/aws/nextjs)
+- [Remix](https://ion.sst.dev/docs/start/aws/remix)
+- [Astro](https://ion.sst.dev/docs/start/aws/astro)
+- [API](https://ion.sst.dev/docs/start/aws/api)
 
-```bash
-npm run build
-```
+## Learn More
 
-You can preview the production build with `npm run preview`.
+Learn more about some of the key concepts:
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- [Live](https://ion.sst.dev/docs/live)
+- [Linking](https://ion.sst.dev/docs/linking)
+- [Console](https://ion.sst.dev/docs/console)
+- [Components](https://ion.sst.dev/docs/components)
+
+## Contributing
+
+Here's how you can contribute:
+
+- Help us improve our docs
+- Find a bug? Open an issue
+- Feature request? Submit a PR 
+
+Join the [#ion channel](https://sst.dev/discord) to learn more.
+
+---
+
+**Join our community** [Discord](https://sst.dev/discord) | [YouTube](https://www.youtube.com/c/sst-dev) | [Twitter](https://twitter.com/SST_dev)

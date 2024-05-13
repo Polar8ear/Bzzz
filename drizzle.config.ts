@@ -1,5 +1,5 @@
 import type { Config } from 'drizzle-kit'
-import { RDS } from 'sst/node/rds'
+import { Resource } from 'sst'
 
 export default {
 	schema: './src/db/schema.ts',
@@ -7,8 +7,8 @@ export default {
 	dialect: 'postgresql',
 	driver: 'aws-data-api',
 	dbCredentials: {
-		database: RDS.db.defaultDatabaseName,
-		resourceArn: RDS.db.clusterArn,
-		secretArn: RDS.db.secretArn,
+		database: Resource.DB.database,
+		resourceArn: Resource.DB.clusterArn,
+		secretArn: Resource.DB.secretArn,
 	},
 } satisfies Config

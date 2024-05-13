@@ -24,6 +24,13 @@ export const sessions = pgTable('session', {
 	expiresAt: timestamp('expires_at').notNull(),
 })
 
+export const sessionRelations = relations(sessions, ({ one }) => ({
+	user: one(users, {
+		fields: [sessions.userId],
+		references: [users.id],
+	}),
+}))
+
 export const oAuthAccounts = pgTable(
 	'oauth_account',
 	{
@@ -45,3 +52,10 @@ export const oAuthAccounts = pgTable(
 		}
 	},
 )
+
+export const oAuthAccountRelations = relations(oAuthAccounts, ({ one }) => ({
+	user: one(users, {
+		fields: [oAuthAccounts.userId],
+		references: [users.id],
+	}),
+}))

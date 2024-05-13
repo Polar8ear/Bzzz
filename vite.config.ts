@@ -7,6 +7,11 @@ export default defineConfig({
 		'process.env.NODE_ENV':
 			process.env.NODE_ENV === 'production' ? '"production"' : '"development"',
 	},
+	build: {
+		rollupOptions: {
+			external: ['sharp'],
+		},
+	},
 	plugins: [
 		sveltekit(),
 		SvelteKitPWA({

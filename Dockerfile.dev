@@ -1,4 +1,4 @@
-FROM node:20.11.1-alpine3.18
+FROM node:20.13
 
 VOLUME /usr/app
 
@@ -9,6 +9,8 @@ ENV NODE_ENV development
 WORKDIR /usr/app
 
 RUN corepack enable pnpm
+RUN "touch ~/.bash_profile; curl -fsSL https://ion.sst.dev/install | bash"
+
 
 # Expose port 3000 for the SvelteKit app and 24678 for Vite's HMR
 EXPOSE 5173

@@ -1,38 +1,32 @@
-import type { SSTConfig } from "sst";
-import { RDS, SvelteKitSite } from "sst/constructs";
+/// <reference path="./.sst/platform/config.d.ts" />
 
-export default {
-  config() {
-    return {
-      name: "app",
-      region: "ap-southeast-1",
-    };
-  },
-  stacks(app) {
-    if (app.stage !== "prod") {
-      app.setDefaultRemovalPolicy("destroy");
-    }
-
-    
-    app.stack(function Site({ stack }) {
-      const rds = new RDS(stack, "db", {
-        engine: 'postgresql13.9',
-        defaultDatabaseName: 'bzzz',
-        scaling: {
-          autoPause: true,
-          minCapacity: "ACU_2",
-          maxCapacity: "ACU_2",
-        }
-      })
-
-
-      const site = new SvelteKitSite(stack, "site", {
-        bind: [rds],
-      });
-      stack.addOutputs({
-        url: site.url,
-      });
-    });
-    
-  },
-} satisfies SSTConfig;
+export default $config({
+	app(input) {
+		return {
+			name: 'bzzz',
+			// removal: input?.stage === 'production' ? 'retain' : 'remove',
+			home: 'aws',
+			providers: {
+				aws: {
+					region: 'ap-northeast-1',
+				},
+			},
+		}
+	},
+	async run() {
+		const vpc = new sst.aws.Vpc('Vpc')
+		const rds = new sst.aws.Postgres('DB', {
+			vpc,
+			scaling: {
+				min: '1 ACU',
+				max: '1 ACU',
+			},
+			databaseName: 'bzzz',
+			version: '16.1',
+		})
+		new sst.aws.SvelteKit('Sveltekit', {
+			link: [rds],
+			buildCommand: 'pnpm build',
+		})
+	},
+})
