@@ -44,4 +44,5 @@
 		</div>
 	</div>
 	<Button variant="outline" href="/login/github">GitHub</Button>
+	<Button variant="outline" href="/login/google">GitHub</Button>
 </div>
