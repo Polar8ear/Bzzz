@@ -12,7 +12,13 @@
 		"moduleResolution": "bundler",
 		"types": ["vite-plugin-pwa/info", "vite-plugin-pwa/svelte"]
 	},
-	"include": ["sst-env.d.ts"]
+	"exclude": [
+		"../node_modules/**",
+		"../src/service-worker.js",
+		"../src/service-worker.ts",
+		"../src/service-worker.d.ts",
+		"./drizzle.config.ts"
+	]
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	// except $lib which is handled by https://kit.svelte.dev/docs/configuration#files
 	//
