@@ -1,10 +1,14 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, varchar, timestamp, primaryKey } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, timestamp, primaryKey, uuid, char } from 'drizzle-orm/pg-core'
+import {} from 'drizzle-orm/mysql-core'
+import { ulid } from 'ulid'
 
 export const users = pgTable('user', {
-	id: varchar('id', {
-		length: 255,
-	}).primaryKey(),
+	id: char('id', {
+		length: 26,
+	})
+		.primaryKey()
+		.$defaultFn(() => ulid()),
 })
 
 export const userRelations = relations(users, ({ many }) => ({
@@ -16,8 +20,8 @@ export const sessions = pgTable('session', {
 	id: varchar('id', {
 		length: 255,
 	}).primaryKey(),
-	userId: varchar('user_id', {
-		length: 255,
+	userId: char('user_id', {
+		length: 26,
 	})
 		.notNull()
 		.references(() => users.id),
@@ -40,8 +44,8 @@ export const oAuthAccounts = pgTable(
 		providerUserId: varchar('provider_user_id', {
 			length: 255,
 		}),
-		userId: varchar('user_id', {
-			length: 255,
+		userId: char('user_id', {
+			length: 26,
 		})
 			.notNull()
 			.references(() => users.id),
