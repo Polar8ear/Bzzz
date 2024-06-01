@@ -9,7 +9,6 @@ const getEnv = (key: string): string => {
 	return value
 }
 
-
 export default {
 	schema: './src/db/schema.ts',
 	out: './.drizzle',
