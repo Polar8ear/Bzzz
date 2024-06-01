@@ -1,10 +1,9 @@
 <script lang="ts">
-	import UserAuthForm from '$lib/components/user-auth-form.svelte'
-	import { Button } from '$lib/components/ui/button'
+	import UserAuthForm from '../user-auth-form.svelte'
 </script>
 
 <div
-	class="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
+	class="container relative flex h-[800px] min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
 >
 	<div class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
 		<div
@@ -27,7 +26,7 @@
 			</blockquote>
 		</div>
 	</div>
-	<div class="lg:p-8">
+	<div class="lg: lg:p-8">
 		<div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 			<div class="flex flex-col space-y-2 text-center">
 				<h1 class="text-2xl font-semibold tracking-tight">Create an account</h1>

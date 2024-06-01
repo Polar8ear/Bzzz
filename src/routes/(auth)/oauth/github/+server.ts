@@ -1,13 +1,12 @@
-// routes/login/github/callback/+server.ts
 import { OAuth2RequestError } from 'arctic'
 import { generateIdFromEntropySize } from 'lucia'
-import { github, lucia } from '$lib/server/auth'
+import { AuthProvider, github, lucia } from '$lib/server/auth'
 
 import type { RequestEvent } from '@sveltejs/kit'
 import { db } from '$lib/server/db'
 import { oAuthAccounts, users } from '$db/schema'
 import { and, eq } from 'drizzle-orm'
-import { log } from '$lib/log'
+import { authLogger } from '$lib/log'
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code')
@@ -15,7 +14,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const storedState = event.cookies.get('github_oauth_state') ?? null
 
 	if (!code || !state || !storedState || state !== storedState) {
-		log.debug('Invalid state')
+		authLogger.debug('Invalid state')
 		return new Response(null, {
 			status: 400,
 		})
@@ -36,7 +35,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				userId: true,
 			},
 			where: and(
-				eq(oAuthAccounts.providerId, 'github'),
+				eq(oAuthAccounts.providerId, AuthProvider.GitHub),
 				eq(oAuthAccounts.providerUserId, githubUser.id.toString()),
 			),
 		})
@@ -49,18 +48,23 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				...sessionCookie.attributes,
 			})
 		} else {
-			const userId = generateIdFromEntropySize(10) // 16 characters long
-
 			// Replace this with your own DB client.
-			await db.transaction(async (tx) => {
-				await tx.insert(users).values({
-					id: userId,
-				})
+			const userId = await db.transaction(async (tx) => {
+				const insertedUser = await tx.insert(users).values({}).returning()
+
+				if (insertedUser.length < 1) {
+					throw new Error('Failed to insert user')
+				}
+
+				const userId = insertedUser[0]?.id
+
 				await tx.insert(oAuthAccounts).values({
-					userId,
-					providerId: 'github',
+					providerId: AuthProvider.GitHub,
 					providerUserId: githubUser.id.toString(),
+					userId,
 				})
+
+				return userId
 			})
 
 			const session = await lucia.createSession(userId, {})
@@ -79,13 +83,13 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	} catch (e) {
 		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {
-			log.debug('OAuth2RequestError', e)
+			authLogger.debug('OAuth2RequestError', e)
 			// invalid code
 			return new Response(null, {
 				status: 400,
 			})
 		}
-		log.debug('unknown error', e)
+		authLogger.debug('unknown error', e)
 		return new Response(null, {
 			status: 500,
 		})

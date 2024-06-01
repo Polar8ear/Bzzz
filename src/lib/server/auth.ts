@@ -24,11 +24,16 @@ export const github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET)
 export const google = new Google(
 	GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET,
-	`${PUBLIC_BASE_URL}/login/google/callback`,
+	`${PUBLIC_BASE_URL}/oauth/google `,
 )
 
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof lucia
 	}
+}
+
+export enum AuthProvider {
+	Google = 'google',
+	GitHub = 'github',
 }
