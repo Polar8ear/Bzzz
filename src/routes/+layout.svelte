@@ -2,11 +2,14 @@
 	import '../app.css'
 	import { pwaInfo } from 'virtual:pwa-info'
 	import { pwaAssetsHead } from 'virtual:pwa-assets/head'
+	import { setUser } from '$lib/stores/userStore'
 
 	$: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : ''
 	if (typeof window !== 'undefined') {
 		import('../pwa')
 	}
+	export let data
+	$: setUser(data.user)
 </script>
 
 <svelte:head>
@@ -20,19 +23,7 @@
 	{/each}
 </svelte:head>
 
-<div class="flex min-h-screen flex-col">
-	<header class="bg-slate-300 py-6">
-		<p class="ml-5 text-5xl font-bold">Bzzz</p>
-	</header>
-
-	<main class="my-2 flex-grow">
-		<slot />
-	</main>
-
-	<footer class="rounded-t-lg bg-slate-800 py-6 text-center text-slate-300">
-		<p class="font-bold">Bzzz Limited</p>
-	</footer>
-</div>
+<slot />
 
 <style>
 	:global(body) {
