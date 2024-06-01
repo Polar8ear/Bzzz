@@ -43,6 +43,10 @@
 			<span class="bg-background px-2 text-muted-foreground"> Or continue with </span>
 		</div>
 	</div>
-	<Button variant="outline" href="/login/github">GitHub</Button>
-	<Button variant="outline" href="/login/google">GitHub</Button>
+	<form action="?/github" method="POST">
+		<Button variant="outline" type="submit" class="w-full">GitHub</Button>
+	</form>
+	<form action="?/google" method="POST">
+		<Button variant="outline" type="submit" class="w-full">Google</Button>
+	</form>
 </div>
