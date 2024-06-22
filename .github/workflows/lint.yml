@@ -17,13 +17,12 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: "9.1.2"
+          version: '9.1.2'
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "20.12"
-          cache: "pnpm"
-
+          node-version: '20.12'
+          cache: 'pnpm'
 
       - name: Get pnpm store directory
         shell: bash
