@@ -7,6 +7,14 @@ on:
     branches:
       - main
 
+env:
+  DB_HOST: 'DB_HOST-to-allow-type-check-to-work'
+  DB_PORT: 'DB_PORT-to-allow-type-check-to-work'
+  DB_ROOT_PASSWORD: 'DB_ROOT_PASSWORD-to-allow-type-check-to-work'
+  DB_DATABASE: 'DB_DATABASE-to-allow-type-check-to-work'
+  DB_USER: 'DB_USER-to-allow-type-check-to-work'
+  DB_PASSWORD: 'DB_PASSWORD-to-allow-type-check-to-work'
+
 jobs:
   lint:
     runs-on: ubuntu-latest
