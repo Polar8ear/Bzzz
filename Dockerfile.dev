@@ -1,4 +1,4 @@
-FROM node:20.11.1-alpine3.18
+FROM node:20.14-bookworm
 
 VOLUME /usr/app
 
@@ -9,6 +9,48 @@ ENV NODE_ENV development
 WORKDIR /usr/app
 
 RUN corepack enable pnpm
+
+RUN apt-get update -y
+RUN apt-get install -y \
+    apt-utils \
+    openssh-client \
+    gnupg2 \
+    dirmngr \
+    iproute2 \
+    procps \
+    lsof \
+    htop \
+    net-tools \
+    psmisc \
+    curl \
+    tree \
+    wget \
+    rsync \
+    ca-certificates \
+    unzip \
+    bzip2 \
+    xz-utils \
+    zip \
+    nano \
+    vim-tiny \
+    less \
+    jq \
+    lsb-release \
+    apt-transport-https \
+    dialog \
+    libc6 \
+    libgcc1 \
+    libkrb5-3 \
+    libgssapi-krb5-2 \
+    libstdc++6 \
+    zlib1g \
+    sudo \
+    ncdu \
+    man-db \
+    strace \
+    manpages \
+    manpages-dev \
+    init-system-helpers
 
 # Expose port 3000 for the SvelteKit app and 24678 for Vite's HMR
 EXPOSE 5173

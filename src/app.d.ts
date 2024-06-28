@@ -4,9 +4,14 @@ import 'vite-plugin-pwa/pwa-assets'
 // for information about these interfaces
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			message: string
+			errorId?: string
+		}
 		// interface Locals {}
-		// interface PageData {}
+		interface PageData {
+			user: import('lucia').User | null
+		}
 		// interface PageState {}
 		// interface Platform {}
 		interface Locals {

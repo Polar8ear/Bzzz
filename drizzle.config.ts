@@ -1,23 +1,23 @@
 import type { Config } from 'drizzle-kit'
 
-//get env and throw if null
+//a function to enforce that environment exist and throw if not found
 const getEnv = (key: string): string => {
 	const value = process.env[key]
 	if (!value) {
-		throw new Error(`Missing env var: ${key}`)
+		throw new Error(`Environment variable ${key} not found`)
 	}
 	return value
 }
 
 export default {
-	schema: './src/db/schema.ts',
+	schema: './src/lib/server/db/schema.ts',
 	out: './.drizzle',
-	driver: 'mysql2',
+	dialect: 'postgresql',
 	dbCredentials: {
-		port: parseInt(getEnv('DB_PORT')),
+		database: getEnv('DB_DATABASE'),
+		port: Number.parseInt(getEnv('DB_PORT')),
 		host: getEnv('DB_HOST'),
 		user: getEnv('DB_USER'),
 		password: getEnv('DB_PASSWORD'),
-		database: getEnv('DB_DATABASE'),
 	},
 } satisfies Config

@@ -8,12 +8,18 @@ on:
       - main
 
 env:
+  PUBLIC_BASE_URL: 'PUBLIC_BASE_URL-to-allow-type-check-to-work'
   DB_HOST: 'DB_HOST-to-allow-type-check-to-work'
   DB_PORT: 'DB_PORT-to-allow-type-check-to-work'
   DB_ROOT_PASSWORD: 'DB_ROOT_PASSWORD-to-allow-type-check-to-work'
   DB_DATABASE: 'DB_DATABASE-to-allow-type-check-to-work'
   DB_USER: 'DB_USER-to-allow-type-check-to-work'
   DB_PASSWORD: 'DB_PASSWORD-to-allow-type-check-to-work'
+  GITHUB_CLIENT_ID: 'GITHUB_CLIENT_ID-to-allow-type-check-to-work'
+  GITHUB_CLIENT_SECRET: 'GITHUB_CLIENT_SECRET-to-allow-type-check-to-work'
+  GOOGLE_CLIENT_ID: 'GOOGLE_CLIENT_ID-to-allow-type-check-to-work'
+  GOOGLE_CLIENT_SECRET: 'GOOGLE_CLIENT_SECRET-to-allow-type-check-to-work'
+  RESEND_API_KEY: 'RESEND_API_KEY-to-allow-type-check-to-work'
 
 jobs:
   lint:

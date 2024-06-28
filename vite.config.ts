@@ -1,22 +1,33 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
 import { SvelteKitPWA } from '@vite-pwa/sveltekit'
+import Icons from 'unplugin-icons/vite'
 
 export default defineConfig({
+	define: {
+		'process.env.NODE_ENV':
+			process.env.NODE_ENV === 'production' ? '"production"' : '"development"',
+	},
+	build: {
+		rollupOptions: {
+			external: ['sharp'],
+		},
+	},
 	plugins: [
 		sveltekit(),
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
 			devOptions: {
-				enabled: true,
-				type: 'module',
+				enabled: false,
 			},
 			pwaAssets: {
 				config: true,
 			},
 			workbox: {
-				mode: process.env.env === 'development' ? 'development' : 'production',
+				mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
+				cleanupOutdatedCaches: true,
 			},
+			strategies: 'generateSW',
 			manifest: {
 				short_name: 'SvelteKit PWA',
 				name: 'SvelteKit PWA',
@@ -63,6 +74,9 @@ export default defineConfig({
 			kit: {
 				includeVersionFile: true,
 			},
+		}),
+		Icons({
+			compiler: 'svelte',
 		}),
 	],
 	test: {
