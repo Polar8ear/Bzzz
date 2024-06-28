@@ -8,6 +8,7 @@ on:
       - main
 
 env:
+  PUBLIC_BASE_URL: 'PUBLIC_BASE_URL-to-allow-type-check-to-work'
   DB_HOST: 'DB_HOST-to-allow-type-check-to-work'
   DB_PORT: 'DB_PORT-to-allow-type-check-to-work'
   DB_ROOT_PASSWORD: 'DB_ROOT_PASSWORD-to-allow-type-check-to-work'
