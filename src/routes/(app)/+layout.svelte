@@ -1,5 +1,5 @@
 <script lang="ts">
-	import NavBar from '$lib/components/nav-bar.svelte'
+	import NavBar from './components/nav-bar.svelte'
 </script>
 
 <div class="flex min-h-screen flex-col">
@@ -9,10 +9,10 @@
 
 	<main class="my-2 flex-grow">
 		<slot />
-		<NavBar />
 	</main>
 
-	<footer class="rounded-t-lg bg-slate-800 pb-16 pt-6 text-center text-slate-300 lg:pb-6">
+	<footer class="rounded-t-lg bg-slate-800 py-6 text-center text-slate-300 lg:pb-6">
 		<p class="font-bold">Bzzz Limited</p>
 	</footer>
+	<NavBar />
 </div>

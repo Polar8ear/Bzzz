@@ -1,6 +1,7 @@
 import { Logger, errorLogger } from '$lib/log'
 import { lucia } from '$lib/server/auth'
 import type { Handle, HandleServerError } from '@sveltejs/kit'
+import { dev } from '$app/environment'
 
 const authHookLogger = new Logger('auth-hook')
 
@@ -48,5 +49,6 @@ export const handleError: HandleServerError = async ({ error, message, status })
 	return {
 		message: 'Whoops! Something went wrong.',
 		errorId,
+		error: dev ? error : undefined,
 	}
 }

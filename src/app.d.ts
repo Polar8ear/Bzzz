@@ -6,10 +6,12 @@ declare global {
 	namespace App {
 		interface Error {
 			message: string
-			errorId: string
+			errorId?: string
 		}
 		// interface Locals {}
-		// interface PageData {}
+		interface PageData {
+			user: import('lucia').User | null
+		}
 		// interface PageState {}
 		// interface Platform {}
 		interface Locals {
