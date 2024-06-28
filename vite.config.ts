@@ -1,6 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
 import { SvelteKitPWA } from '@vite-pwa/sveltekit'
+import Icons from 'unplugin-icons/vite'
 
 export default defineConfig({
 	define: {
@@ -73,6 +74,9 @@ export default defineConfig({
 			kit: {
 				includeVersionFile: true,
 			},
+		}),
+		Icons({
+			compiler: 'svelte',
 		}),
 	],
 	test: {
