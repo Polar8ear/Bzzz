@@ -3,7 +3,6 @@
 	import { Input } from '$lib/components/ui/input'
 	import { Label } from '$lib/components/ui/label'
 	import { superForm } from 'sveltekit-superforms'
-	import SuperDebug from 'sveltekit-superforms'
 
 	export let data
 

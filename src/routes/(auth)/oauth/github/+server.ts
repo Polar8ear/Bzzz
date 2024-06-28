@@ -1,5 +1,4 @@
 import { OAuth2RequestError } from 'arctic'
-import { generateIdFromEntropySize } from 'lucia'
 import { AuthProvider, github, lucia } from '$lib/server/auth'
 
 import type { RequestEvent } from '@sveltejs/kit'
