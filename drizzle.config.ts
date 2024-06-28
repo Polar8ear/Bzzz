@@ -10,7 +10,7 @@ const getEnv = (key: string): string => {
 }
 
 export default {
-	schema: './src/db/schema.ts',
+	schema: './src/lib/server/db/schema.ts',
 	out: './.drizzle',
 	dialect: 'postgresql',
 	dbCredentials: {
