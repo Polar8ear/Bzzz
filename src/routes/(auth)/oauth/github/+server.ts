@@ -4,9 +4,25 @@ import { AuthProvider, github, lucia } from '$lib/server/auth'
 
 import type { RequestEvent } from '@sveltejs/kit'
 import { db } from '$lib/server/db'
-import { oAuthAccounts, users } from '$db/schema'
+import { oAuthAccounts, users } from '$lib/server/db/schema'
 import { and, eq } from 'drizzle-orm'
 import { authLogger } from '$lib/log'
+import { z } from 'zod'
+
+const gitHubUserSchema = z.object({
+	id: z.number(),
+	login: z.string(),
+	avatar_url: z.string(),
+	email: z.string().email().nullable(),
+})
+
+const gitHubEmailsSchema = z.array(
+	z.object({
+		email: z.string().email(),
+		primary: z.boolean(),
+		verified: z.boolean(),
+	}),
+)
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code')
@@ -27,9 +43,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				Authorization: `Bearer ${tokens.accessToken}`,
 			},
 		})
-		const githubUser: GitHubUser = await githubUserResponse.json()
+		const githubUserJson = await githubUserResponse.json()
+		const githubUser = gitHubUserSchema.parse(githubUserJson)
 
-		// Replace this with your own DB client.
 		const existingUser = await db.query.oAuthAccounts.findFirst({
 			columns: {
 				userId: true,
@@ -40,17 +56,31 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			),
 		})
 
-		if (existingUser) {
-			const session = await lucia.createSession(existingUser.userId, {})
-			const sessionCookie = lucia.createSessionCookie(session.id)
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes,
-			})
-		} else {
-			// Replace this with your own DB client.
-			const userId = await db.transaction(async (tx) => {
-				const insertedUser = await tx.insert(users).values({}).returning()
+		let userId = existingUser?.userId
+
+		if (userId == null) {
+			let email = githubUser.email
+
+			if (email == null) {
+				authLogger.debug('GitHub user does not have an email. trying to access from another url')
+				const githubEmailResponse = await fetch('https://api.github.com/user/emails', {
+					headers: {
+						Authorization: `Bearer ${tokens.accessToken}`,
+					},
+				})
+
+				const emails = gitHubEmailsSchema.parse(await githubEmailResponse.json())
+				email = emails.filter((e) => e.verified).find((e) => e.primary)?.email ?? null
+			}
+
+			userId = await db.transaction(async (tx) => {
+				const insertedUser = await tx
+					.insert(users)
+					.values({
+						email,
+						emailVerifiedAt: email != null ? new Date() : null,
+					})
+					.returning()
 
 				if (insertedUser.length < 1) {
 					throw new Error('Failed to insert user')
@@ -66,14 +96,15 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 				return userId
 			})
-
-			const session = await lucia.createSession(userId, {})
-			const sessionCookie = lucia.createSessionCookie(session.id)
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes,
-			})
 		}
+
+		const session = await lucia.createSession(userId, {})
+		const sessionCookie = lucia.createSessionCookie(session.id)
+		event.cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: '.',
+			...sessionCookie.attributes,
+		})
+
 		return new Response(null, {
 			status: 302,
 			headers: {
@@ -81,22 +112,16 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			},
 		})
 	} catch (e) {
-		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {
 			authLogger.debug('OAuth2RequestError', e)
-			// invalid code
 			return new Response(null, {
 				status: 400,
 			})
 		}
+
 		authLogger.debug('unknown error', e)
 		return new Response(null, {
 			status: 500,
 		})
 	}
-}
-
-interface GitHubUser {
-	id: number
-	login: string
 }

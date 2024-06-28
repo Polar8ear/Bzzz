@@ -4,9 +4,8 @@ import { AuthProvider, google, lucia } from '$lib/server/auth'
 
 import type { RequestEvent } from '@sveltejs/kit'
 import { db } from '$lib/server/db'
-import { oAuthAccounts, users } from '$db/schema'
+import { oAuthAccounts, users } from '$lib/server/db/schema'
 import { and, eq } from 'drizzle-orm'
-import { authLogger } from '$lib/authLogger'
 import { parseJWT } from 'oslo/jwt'
 import { authLogger } from '$lib/log'
 

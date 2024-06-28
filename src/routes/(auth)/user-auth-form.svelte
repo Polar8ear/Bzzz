@@ -18,7 +18,7 @@
 </script>
 
 <div class={cn('grid gap-6', className)} {...$$restProps}>
-	<form on:submit|preventDefault={onSubmit}>
+	<form action="?/email" method="POST">
 		<div class="grid gap-2">
 			<div class="grid gap-1">
 				<Label class="sr-only" for="email">Email</Label>
@@ -49,4 +49,5 @@
 	<form action="?/google" method="POST">
 		<Button variant="outline" type="submit" class="w-full">Google</Button>
 	</form>
+	<form action="?/email" method="POST"></form>
 </div>
