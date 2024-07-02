@@ -1,5 +1,9 @@
 import { Logger, errorLogger } from '$lib/log'
-import { lucia } from '$lib/server/auth'
+import {
+	addAuthCookieToRequestBySession,
+	addBlankAuthCookieToRequest,
+	lucia,
+} from '$lib/server/auth'
 import type { Handle, HandleServerError } from '@sveltejs/kit'
 import { dev } from '$app/environment'
 
@@ -17,23 +21,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const { session, user } = await lucia.validateSession(sessionId)
 	if (session && session.fresh) {
-		authHookLogger.debug('session is fresh')
-		authHookLogger.debug('Refreshing session', user)
-		const sessionCookie = lucia.createSessionCookie(session.id)
-		// sveltekit types deviates from the de-facto standard
-		// you can use 'as any' too
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes,
-		})
+		authHookLogger.debug('session is fresh and refreshing session', user)
+		addAuthCookieToRequestBySession(event, session)
 	}
 	if (!session) {
 		authHookLogger.debug('no session')
-		const sessionCookie = lucia.createBlankSessionCookie()
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes,
-		})
+		addBlankAuthCookieToRequest(event)
 	}
 	authHookLogger.debug('setting user and session')
 	event.locals.user = user

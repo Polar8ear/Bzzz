@@ -11,3 +11,11 @@ export const verifyEmail = (userId: string, token: string) => {
 		db.delete(emailVerificationTokens).where(eq(emailVerificationTokens.id, token)).execute()
 	}
 }
+
+export const isUserEmailUnique = async (email: string) => {
+	const existingUser = await db.query.users.findFirst({
+		where: (fields, { eq }) => eq(fields.email, email),
+	})
+
+	return existingUser == null
+}

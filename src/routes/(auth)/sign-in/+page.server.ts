@@ -1,4 +1,4 @@
-import { lucia } from '$lib/server/auth'
+import { addAuthCookieToRequest } from '$lib/server/auth'
 import { redirect, type Actions } from '@sveltejs/kit'
 import { verify } from '$lib/server/db/password'
 import { db } from '$lib/server/db'
@@ -52,12 +52,7 @@ export const actions = {
 			})
 		}
 
-		const session = await lucia.createSession(user.id, {})
-		const sessionCookie = lucia.createSessionCookie(session.id)
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes,
-		})
+		await addAuthCookieToRequest(event, user.id)
 
 		redirect(302, '/')
 	},

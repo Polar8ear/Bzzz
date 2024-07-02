@@ -1,4 +1,4 @@
-import { Lucia, TimeSpan } from 'lucia'
+import { Lucia, TimeSpan, type Session } from 'lucia'
 import { dev } from '$app/environment'
 import { adapter } from './db'
 import { GitHub, Google } from 'arctic'
@@ -10,6 +10,7 @@ import {
 } from '$env/static/private'
 import { PUBLIC_BASE_URL } from '$env/static/public'
 import type { DatabaseUserAttributes } from './db/schema'
+import type { RequestEvent } from '@sveltejs/kit'
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {
@@ -43,4 +44,29 @@ declare module 'lucia' {
 export enum AuthProvider {
 	Google = 'google',
 	GitHub = 'github',
+}
+
+export const addAuthCookieToRequest = async (event: RequestEvent, userId: string) => {
+	const session = await lucia.createSession(userId, {})
+	const cookie = lucia.createSessionCookie(session.id)
+	event.cookies.set(cookie.name, cookie.value, {
+		path: '.',
+		...cookie.attributes,
+	})
+}
+
+export const addBlankAuthCookieToRequest = (event: RequestEvent) => {
+	const cookie = lucia.createBlankSessionCookie()
+	event.cookies.set(cookie.name, cookie.value, {
+		path: '.',
+		...cookie.attributes,
+	})
+}
+
+export const addAuthCookieToRequestBySession = (event: RequestEvent, session: Session) => {
+	const cookie = lucia.createSessionCookie(session.id)
+	event.cookies.set(cookie.name, cookie.value, {
+		path: '.',
+		...cookie.attributes,
+	})
 }

@@ -3,7 +3,6 @@
 	import { Input } from '$lib/components/ui/input'
 	import { Label } from '$lib/components/ui/label'
 	import { superForm } from 'sveltekit-superforms'
-
 	export let data
 
 	const { form, enhance, errors, constraints, message } = superForm(data.form)
@@ -105,13 +104,12 @@
 						<span class="bg-background px-2 text-muted-foreground"> Or continue with </span>
 					</div>
 				</div>
-				<form action="?/github" method="POST">
+				<form action="/sign-up?/github" method="POST">
 					<Button variant="outline" type="submit" class="w-full">GitHub</Button>
 				</form>
-				<form action="?/google" method="POST">
+				<form action="/sign-up?/google" method="POST">
 					<Button variant="outline" type="submit" class="w-full">Google</Button>
 				</form>
-				<form action="?/email" method="POST"></form>
 			</div>
 
 			<p class="px-8 text-center text-sm text-muted-foreground">

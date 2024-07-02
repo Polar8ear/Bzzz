@@ -10,7 +10,7 @@
 	<div>Signed in</div>
 	<div>{user.id}</div>
 {:else}
-	<Button href="/login">Sign in</Button>
+	<Button href="/sign-in">Sign in</Button>
 	<div>Not signed in</div>
 {/if}
 

@@ -1,22 +1,23 @@
 import { dev } from '$app/environment'
-import { github, google, lucia } from '$lib/server/auth'
+import { addAuthCookieToRequest, github, google } from '$lib/server/auth'
 import { redirect, type Actions } from '@sveltejs/kit'
 import { generateCodeVerifier, generateState } from 'arctic'
 import { hash } from '$lib/server/db/password'
 import { db } from '$lib/server/db'
 import { emailVerificationTokens, users } from '$lib/server/db/schema'
-import { fail, message, superValidate } from 'sveltekit-superforms'
+import { fail, setError, superValidate } from 'sveltekit-superforms'
 import { zod } from 'sveltekit-superforms/adapters'
 import { sendVerificationEmail } from '$lib/server/services/email'
 import { TimeSpan, createDate } from 'oslo'
-import { createVerificationToken } from '$lib/server/services/token'
+import { createVerificationToken } from '$lib/server/services/emailToken'
 import { errorLogger } from '$lib/log'
 import { credentialSchema } from '../credentialSchema'
+import { isUserEmailUnique } from '$lib/server/services/user'
 
-export const load = async () => {
+export const load = async ({ locals }) => {
 	const form = await superValidate(zod(credentialSchema))
 
-	return { form }
+	return { form, isLoggedIn: locals.user != null }
 }
 
 export const actions = {
@@ -63,50 +64,41 @@ export const actions = {
 	},
 	email: async (event) => {
 		const form = await superValidate(event.request, zod(credentialSchema))
+		const { email, password } = form.data
+
+		if (!(await isUserEmailUnique(email))) {
+			return setError(form, 'email', 'Email is already in use')
+		}
 
 		if (!form.valid) {
 			return fail(404, { form })
 		}
 
-		const { email, password } = form.data
-
-		try {
-			const [newUser] = await db
-				.insert(users)
-				.values({
-					email,
-					password: await hash(password),
-				})
-				.returning()
-			const session = await lucia.createSession(newUser.id, {})
-			const sessionCookie = lucia.createSessionCookie(session.id)
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes,
+		const [newUser] = await db
+			.insert(users)
+			.values({
+				email,
+				password: await hash(password),
 			})
+			.returning()
 
-			try {
-				const token = createVerificationToken()
+		await addAuthCookieToRequest(event, newUser.id)
 
-				await db.insert(emailVerificationTokens).values({
-					id: token,
-					userId: newUser.id,
-					expiresAt: createDate(new TimeSpan(1, 'h')),
-				})
-				console.log(newUser.email)
-				const emailAction = await sendVerificationEmail(token, email)
+		const token = createVerificationToken()
 
-				if (emailAction) {
-					errorLogger.error('email action', emailAction.error)
-				}
-			} catch (error) {
-				errorLogger.error(error)
-			}
-		} catch (error) {
-			errorLogger.error(error)
-			return message(form, 'Failed to register user.')
+		await db.insert(emailVerificationTokens).values({
+			id: token,
+			userId: newUser.id,
+			expiresAt: createDate(new TimeSpan(1, 'h')),
+		})
+
+		const emailResponse = await sendVerificationEmail(token, email)
+
+		if (emailResponse.error) {
+			errorLogger.error('email action', emailResponse.error)
+			return redirect(302, '/')
 		}
 
-		redirect(302, '/')
+		return redirect(302, '/email-verification')
 	},
 } satisfies Actions
