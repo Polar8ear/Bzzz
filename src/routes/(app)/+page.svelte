@@ -1,18 +1,27 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button'
+	import Input from '$lib/components/ui/input/input.svelte'
 	import { log } from '$lib/log.js'
+	import { superForm } from 'sveltekit-superforms'
 
 	export let data
-	$: log.debug(data)
+	$: services = data.services
+	const { enhance, form, errors, constraints } = superForm(data.form, {})
 </script>
 
-<h1 class="text-xl">Welcome to Bzzz</h1>
-{#if data.user}
-	<div>Signed in</div>
-	<div>{data.user.id}</div>
-	<Button href="/dashboard">Dashboard</Button>
+<form method="GET">
+	<Input
+		bind:value={$form.q}
+		name="q"
+		type="text"
+		aria-invalid={$errors.q ? 'true' : undefined}
+		placeholder="Search for services"
+		{...$constraints.q}
+	/>
+</form>
+{#each services ?? [] as service (service.id)}
+	<div>
+		{service.name}
+	</div>
 {:else}
-	<Button href="/sign-up">Sign up</Button>
-	<Button href="/login">Sign in</Button>
-	<div>Not signed in</div>
-{/if}
+	<div>No services found</div>
+{/each}

@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
 	pgTable,
 	varchar,
@@ -11,6 +11,7 @@ import {
 	text,
 	jsonb,
 	smallint,
+	index,
 } from 'drizzle-orm/pg-core'
 import { ulid } from 'ulid'
 
@@ -164,14 +165,34 @@ export const serviceProvidersToServicesRelations = relations(
 	}),
 )
 
-export const services = pgTable('services', {
-	id: primaryId,
-	name: varchar('name'),
-	price: integer('price'),
-	categoryId: id('category_id').references(() => categories.id),
-	details: text('details'),
-	...createdAtUpdatedAt,
-})
+export const services = pgTable(
+	'services',
+	{
+		id: primaryId,
+		name: varchar('name'),
+		price: integer('price'),
+		categoryId: id('category_id').references(() => categories.id),
+		details: text('details'),
+		...createdAtUpdatedAt,
+	},
+	(table) => ({
+		/**
+		 * @link https://orm.drizzle.team/learn/guides/postgresql-full-text-search
+		 */
+		searchIndex: index('search_index').using(
+			'gin',
+			sql`(
+				setweight(to_tsvector('english', ${table.name}), 'A') ||
+				setweight(to_tsvector('english', ${table.details}), 'B')
+			)`,
+		),
+	}),
+)
+
+export const servicesSearchQuery = `(
+	setweight(to_tsvector('english', ${services.name}), 'A') ||
+	setweight(to_tsvector('english', ${services.details}), 'B')
+)`
 
 export const servicesRelations = relations(services, ({ one, many }) => ({
 	serviceProvidersToServices: many(serviceProvidersToServices),
