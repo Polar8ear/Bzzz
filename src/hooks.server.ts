@@ -41,7 +41,7 @@ export const handleError: HandleServerError = async ({ error, message, status })
 	const originalErrorStack = dev && error instanceof Error ? error.stack : undefined
 
 	return {
-		message: 'Whoops! Something went wrong.',
+		message: dev ? message : 'Whoops! Something went wrong.',
 		errorId,
 		originalErrorStack,
 	}
