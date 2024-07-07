@@ -105,7 +105,7 @@ export const users = pgTable('users', {
 	...createdAtUpdatedAt,
 })
 
-export const userRelations = relations(users, ({ many, one }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
 	sessions: many(sessions),
 	oAuthAccounts: many(oAuthAccounts),
 	defaultAddress: one(addreses, {
@@ -113,7 +113,6 @@ export const userRelations = relations(users, ({ many, one }) => ({
 		references: [addreses.id],
 	}),
 	requests: many(requests),
-	reviews: many(reviews),
 }))
 
 export const emailVerificationTokens = pgTable('email_verification_tokens', {
@@ -173,32 +172,38 @@ export const services = pgTable(
 		price: integer('price'),
 		categoryId: id('category_id').references(() => categories.id),
 		details: text('details'),
+		imageFileId: id('image_file_id').references(() => files.id),
 		...createdAtUpdatedAt,
 	},
 	(table) => ({
 		/**
 		 * @link https://orm.drizzle.team/learn/guides/postgresql-full-text-search
+		 * @description Using Coalce to prevent null values from being indexed
 		 */
 		searchIndex: index('search_index').using(
 			'gin',
 			sql`(
-				setweight(to_tsvector('english', ${table.name}), 'A') ||
-				setweight(to_tsvector('english', ${table.details}), 'B')
+				setweight(to_tsvector('english', COALESCE(${table.name}, '')), 'A') ||
+				setweight(to_tsvector('english', COALESCE(${table.details}, '')), 'B')
 			)`,
 		),
 	}),
 )
 
-export const servicesSearchQuery = `(
-	setweight(to_tsvector('english', ${services.name}), 'A') ||
-	setweight(to_tsvector('english', ${services.details}), 'B')
-)`
+export const servicesSearchQuery = (queryString: string) => sql`(
+	setweight(to_tsvector('english', COALESCE(${services.name}, '')), 'A') ||
+	setweight(to_tsvector('english', COALESCE(${services.details}, '')), 'B')
+) @@ websearch_to_tsquery('english', ${queryString})`
 
 export const servicesRelations = relations(services, ({ one, many }) => ({
 	serviceProvidersToServices: many(serviceProvidersToServices),
 	category: one(categories, {
 		fields: [services.categoryId],
 		references: [categories.id],
+	}),
+	image: one(files, {
+		fields: [services.imageFileId],
+		references: [files.id],
 	}),
 }))
 
@@ -336,6 +341,18 @@ export const reviews = pgTable('reviews', {
 	...createdAtUpdatedAt,
 })
 
+export const reviewsRelations = relations(reviews, ({ one, many }) => ({
+	request: one(requests, {
+		fields: [reviews.requestId],
+		references: [requests.id],
+	}),
+	service: one(services, {
+		fields: [reviews.serviceId],
+		references: [services.id],
+	}),
+	reviewImages: many(reviewImages),
+}))
+
 export const reviewImages = pgTable('review_images', {
 	id: primaryId,
 	reviewId: id('review_id')
@@ -376,6 +393,17 @@ export const tagRatings = pgTable('tag_ratings', {
 		.notNull(),
 	...createdAtUpdatedAt,
 })
+
+export const tagRatingsRelation = relations(tagRatings, ({ one }) => ({
+	request: one(requests, {
+		fields: [tagRatings.requestId],
+		references: [requests.id],
+	}),
+	tag: one(tags, {
+		fields: [tagRatings.tagId],
+		references: [tags.id],
+	}),
+}))
 
 export const files = pgTable('files', {
 	id: primaryId,
