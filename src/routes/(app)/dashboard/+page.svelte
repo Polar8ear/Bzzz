@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button'
-	import { getUser } from '$lib/stores/userStore'
-
-	const user = getUser()
+	export let data
+	const { user } = data
 </script>
 
 <h1 class="text-xl">Welcome to Bzzz</h1>

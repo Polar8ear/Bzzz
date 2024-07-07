@@ -41,7 +41,7 @@
 </form>
 <article class="mx-4 divide-y divide-gray-300">
 	{#each services ?? [] as service (service.id)}
-		<a href="services/{service.name}" class="m-2 flex h-16 items-center gap-2.5 hover:opacity-80">
+		<a href="services/{service.id}" class="m-2 flex h-16 items-center gap-2.5 hover:opacity-80">
 			<img
 				src={service.image?.key || 'https://cdn-icons-png.flaticon.com/512/6794/6794826.png'}
 				alt="{service.name} Image"

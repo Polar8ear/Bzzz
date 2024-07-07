@@ -60,6 +60,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@iconify-json/ph':
+        specifier: ^1.1.13
+        version: 1.1.13
       '@playwright/test':
         specifier: ^1.44.1
         version: 1.44.1
@@ -111,9 +114,6 @@ importers:
       eslint-plugin-svelte:
         specifier: ^2.39.0
         version: 2.39.0(eslint@8.57.0)(svelte@4.2.17)
-      fa6-regular:
-        specifier: link:@iconify-json/fa6-regular
-        version: link:@iconify-json/fa6-regular
       lucia:
         specifier: ^3.2.0
         version: 3.2.0
@@ -1487,6 +1487,9 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+
+  '@iconify-json/ph@1.1.13':
+    resolution: {integrity: sha512-xtM4JJ63HCKj09WRqrBswXiHrpliBlqboWSZH8odcmqYXbvIFceU9/Til4V+MQr6+MoUC+KB72cxhky2+A6r/g==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -7075,6 +7078,10 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/object-schema@2.0.3': {}
+
+  '@iconify-json/ph@1.1.13':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/types@2.0.0': {}
 

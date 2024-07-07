@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import { getUser } from '$lib/stores/userStore'
-	const user = getUser()
+	export let data
+	const { user } = data
 </script>
 
 <div>
