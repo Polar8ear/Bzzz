@@ -37,11 +37,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 export const handleError: HandleServerError = async ({ error, message, status }) => {
 	const errorId = crypto.randomUUID()
 
-	errorLogger.debug({ 'Error ID': errorId, error, status, message })
+	errorLogger.error({ 'Error ID': errorId, error, status, message })
+	const originalErrorStack = dev && error instanceof Error ? error.stack : undefined
 
 	return {
 		message: 'Whoops! Something went wrong.',
 		errorId,
-		error: dev ? error : undefined,
+		originalErrorStack,
 	}
 }

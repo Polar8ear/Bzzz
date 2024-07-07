@@ -1,4 +1,5 @@
 import 'vite-plugin-pwa/pwa-assets'
+import 'unplugin-icons/types/svelte'
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -7,6 +8,7 @@ declare global {
 		interface Error {
 			message: string
 			errorId?: string
+			originalErrorStack?: string
 		}
 		// interface Locals {}
 		interface PageData {
