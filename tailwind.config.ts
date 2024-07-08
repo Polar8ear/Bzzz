@@ -1,7 +1,8 @@
 import { fontFamily } from 'tailwindcss/defaultTheme'
 import type { Config } from 'tailwindcss'
+import { withUt } from 'uploadthing/tw'
 
-const config: Config = {
+const config: Config = withUt({
 	darkMode: ['class'],
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	safelist: ['dark'],
@@ -67,6 +68,6 @@ const config: Config = {
 			}),
 		},
 	},
-}
+})
 
 export default config

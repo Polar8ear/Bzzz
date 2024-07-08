@@ -4,7 +4,7 @@
 	import { cn } from '$lib/utils.js'
 
 	type $$Props = HTMLInputAttributes & {
-		inputEl: HTMLInputElement | undefined
+		inputEl?: HTMLInputElement
 	}
 	type _$$Events = InputEvents
 
@@ -15,7 +15,7 @@
 	// Workaround for https://github.com/sveltejs/svelte/issues/9305
 	// Fixed in Svelte 5, but not backported to 4.x.
 	export let readonly: $$Props['readonly'] = undefined
-	export let inputEl: HTMLInputElement | undefined = undefined
+	export let inputEl: $$Props['inputEl'] = undefined
 </script>
 
 <input

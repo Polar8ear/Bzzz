@@ -3,11 +3,11 @@
 </script>
 
 <div class="flex min-h-screen flex-col">
-	<header class="bg-slate-100 py-6">
+	<header class="mb-2 bg-slate-100 py-6">
 		<p class="ml-5 text-center text-2xl font-bold">Bzzz</p>
 	</header>
 
-	<main class="my-2 flex-grow">
+	<main class="flex-grow">
 		<slot />
 	</main>
 

@@ -46,6 +46,8 @@ export enum AuthProvider {
 	GitHub = 'github',
 }
 
+export const AUTH_COOKIE_NAME = lucia.sessionCookieName
+
 export const addAuthCookieToRequest = async (event: RequestEvent, userId: string) => {
 	const session = await lucia.createSession(userId, {})
 	const cookie = lucia.createSessionCookie(session.id)

@@ -168,10 +168,10 @@ export const services = pgTable(
 	'services',
 	{
 		id: primaryId,
-		name: varchar('name'),
-		price: integer('price'),
+		name: varchar('name').notNull(),
+		price: integer('price').notNull(),
 		categoryId: id('category_id').references(() => categories.id),
-		details: text('details'),
+		details: text('details').notNull(),
 		imageFileId: id('image_file_id').references(() => files.id),
 		...createdAtUpdatedAt,
 	},
@@ -409,8 +409,11 @@ export const files = pgTable('files', {
 	id: primaryId,
 	key: varchar('key').notNull(),
 	location: varchar('location', {
-		enum: ['s3'],
+		enum: ['s3', 'uploadthing'],
 	}).notNull(),
+	uploadedById: id('uploaded_by_id')
+		.references(() => users.id)
+		.notNull(),
 })
 
 export const documents = pgTable('documents', {
