@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css'
-	import '@uploadthing/svelte/styles.css'
 	import { pwaInfo } from 'virtual:pwa-info'
 	import { pwaAssetsHead } from 'virtual:pwa-assets/head'
 	import { setUser } from '$lib/stores/userStore'

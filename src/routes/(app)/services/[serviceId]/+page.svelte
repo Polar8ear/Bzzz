@@ -63,7 +63,7 @@
 		</div>
 	</article>
 	<div
-		class="sticky bottom-14 mt-auto flex h-20 items-center justify-center self-stretch bg-slate-100 md:justify-end lg:bottom-0"
+		class="sticky bottom-14 mt-auto flex h-20 items-center justify-center self-stretch bg-slate-100 md:justify-end"
 	>
 		<a
 			href="/services/book/{data.service.id}"

@@ -114,13 +114,19 @@
 			></textarea>
 		</div>
 		<div
-			class="sticky bottom-14 mt-auto flex flex-col gap-6 rounded-t-lg bg-slate-100 px-4 py-5 lg:bottom-0"
+			class="sticky bottom-14 mt-auto flex flex-col gap-6 rounded-t-lg bg-slate-100 px-4 py-5 md:flex-row"
 		>
-			<div class="flex items-baseline justify-between">
+			<div class="flex items-baseline justify-between gap-2 sm:justify-end">
 				<span class="text-sm text-slate-600">Total</span>
 				<span class="text-2xl" aria-label="Total Price">RM {(totalPrice / 100).toFixed(2)}</span>
 			</div>
-			<Button size="lg" variant="default" type="button" on:click={() => (page = 2)}>Next</Button>
+			<Button
+				size="lg"
+				variant="default"
+				class="sm:ml-auto sm:min-w-32"
+				type="button"
+				on:click={() => (page = 2)}>Next</Button
+			>
 		</div>
 	</div>
 
@@ -146,15 +152,15 @@
 			</div>
 		</div>
 		<div
-			class="sticky bottom-14 mt-auto flex flex-col gap-6 rounded-t-lg bg-slate-100 px-4 py-5 lg:bottom-0"
+			class="sticky bottom-14 mt-auto flex flex-col gap-6 rounded-t-lg bg-slate-100 px-4 py-5 md:flex-row"
 		>
-			<div class="flex items-baseline justify-between">
+			<div class="flex items-baseline justify-between gap-2 sm:justify-end">
 				<span class="text-sm text-slate-600">Total</span>
 				<span class="text-2xl" aria-label="Total Price"
 					>RM {(totalPriceWithCharge / 100).toFixed(2)}</span
 				>
 			</div>
-			<Button size="lg" variant="default" type="submit">Pay</Button>
+			<Button size="lg" class="sm:ml-auto sm:min-w-32" variant="default" type="submit">Pay</Button>
 		</div>
 	</div>
 </form>

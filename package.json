@@ -27,6 +27,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.1.1",
 		"@tailwindcss/typography": "^0.5.13",
 		"@types/eslint": "^8.56.10",
+		"@types/google.maps": "^3.55.11",
 		"@types/node": "^20.14.10",
 		"@typescript-eslint/eslint-plugin": "^7.15.0",
 		"@typescript-eslint/parser": "^7.15.0",
@@ -61,6 +62,7 @@
 	"type": "module",
 	"dependencies": {
 		"@aws-sdk/client-rds-data": "^3.609.0",
+		"@googlemaps/js-api-loader": "^1.16.6",
 		"@lucia-auth/adapter-drizzle": "^1.0.7",
 		"@node-rs/argon2": "^1.8.3",
 		"@uploadthing/svelte": "^6.6.3",

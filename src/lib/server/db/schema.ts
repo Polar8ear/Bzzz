@@ -35,13 +35,13 @@ const primaryId = id('id')
 	.primaryKey()
 	.$defaultFn(() => ulid())
 
-export const addreses = pgTable('addresses', {
+export const addresses = pgTable('addresses', {
 	id: primaryId,
-	belongTo: id('belong_to'),
+	belongTo: id('belong_to').notNull(),
 	belongToType: varchar('belong_to_type', {
 		length: 16,
 		enum: ['user', 'service_provider'],
-	}),
+	}).notNull(),
 	line1: varchar('line_1', {
 		length: 255,
 	}).notNull(),
@@ -60,20 +60,21 @@ export const addreses = pgTable('addresses', {
 	state: varchar('state', {
 		length: 255,
 	}).notNull(),
+	country: varchar('country').notNull(),
 	coordinate: point('coordinate', {
 		mode: 'xy',
 	}).notNull(),
 	...createdAtUpdatedAt,
 })
 
-export const addressesRelation = relations(addreses, ({ one }) => ({
+export const addressesRelation = relations(addresses, ({ one }) => ({
 	user: one(users, {
-		fields: [addreses.belongTo],
+		fields: [addresses.belongTo],
 		references: [users.id],
 	}),
 
 	serviceProvider: one(serviceProviders, {
-		fields: [addreses.belongTo],
+		fields: [addresses.belongTo],
 		references: [serviceProviders.id],
 	}),
 }))
@@ -101,16 +102,16 @@ export const users = pgTable('users', {
 		length: 255,
 	}),
 	emailVerifiedAt: timestamp('email_verified_at'),
-	defaultAddressId: id('default_address_id').references((): AnyPgColumn => addreses.id),
+	defaultAddressId: id('default_address_id').references((): AnyPgColumn => addresses.id),
 	...createdAtUpdatedAt,
 })
 
 export const usersRelations = relations(users, ({ many, one }) => ({
 	sessions: many(sessions),
 	oAuthAccounts: many(oAuthAccounts),
-	defaultAddress: one(addreses, {
+	defaultAddress: one(addresses, {
 		fields: [users.defaultAddressId],
-		references: [addreses.id],
+		references: [addresses.id],
 	}),
 	requests: many(requests),
 }))
@@ -138,9 +139,9 @@ export const serviceProvidersRelations = relations(serviceProviders, ({ one, man
 		fields: [serviceProviders.ownedById],
 		references: [users.id],
 	}),
-	address: one(addreses, {
+	address: one(addresses, {
 		fields: [serviceProviders.addressId],
-		references: [addreses.id],
+		references: [addresses.id],
 	}),
 	serviceProvidersToServices: many(serviceProvidersToServices),
 }))
@@ -271,7 +272,7 @@ export const requests = pgTable('requests', {
 	requestedById: id('requested_by_id')
 		.references(() => users.id)
 		.notNull(),
-	addressId: id('address_id').references(() => addreses.id),
+	addressId: id('address_id').references(() => addresses.id),
 	serviceProviderId: id('service_provider_id').references(() => serviceProviders.id),
 	serviceId: id('service_id')
 		.references(() => services.id)
@@ -290,9 +291,9 @@ export const requestsRelations = relations(requests, ({ one, many }) => ({
 		fields: [requests.requestedById],
 		references: [users.id],
 	}),
-	address: one(addreses, {
+	address: one(addresses, {
 		fields: [requests.addressId],
-		references: [addreses.id],
+		references: [addresses.id],
 	}),
 	serviceProvider: one(serviceProviders, {
 		fields: [requests.serviceProviderId],

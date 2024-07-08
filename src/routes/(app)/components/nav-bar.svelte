@@ -1,5 +1,5 @@
-<div class="sticky bottom-0 block w-full bg-slate-100 lg:hidden">
-	<ul class="mx-2 flex justify-center align-middle">
+<div class="sticky bottom-0 block w-full bg-slate-100">
+	<ul class="mx-2 flex justify-center align-middle md:mx-auto md:max-w-md">
 		<li class="flex-1 px-4 py-4 text-center"><a href="/dashboard">Home</a></li>
 		<li class="flex-1 px-4 py-4 text-center"><a href="/">Drill</a></li>
 		<li class="flex-1 px-4 py-4 text-center"><a href="/messages">Chat</a></li>
