@@ -12,7 +12,7 @@
 
 	let searchInput: HTMLInputElement
 
-	const handleInput = debounce(async (e: Event) => {
+	const handleInput = debounce(async () => {
 		await goto(`?q=${$form.q}`, {
 			keepFocus: true,
 		})

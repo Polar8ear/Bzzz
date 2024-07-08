@@ -1,6 +1,5 @@
 <script>
 	export let data
-	import BackIcon from 'virtual:icons/fa6-solid/chevron-left'
 	import Ratings from '$lib/components/ratings.svelte'
 	import TitleWithBack from '$lib/components/title-with-back.svelte'
 </script>
@@ -19,6 +18,7 @@
 	/>
 
 	{#if data.service.details}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		<div class="prose prose-slate m-4 self-center">{@html data.service.details}</div>
 	{:else}
 		<p class="my-4 text-center">No details</p>
@@ -28,6 +28,7 @@
 		<div class="mx-4 flex gap-4">
 			<div class="flex flex-col items-center justify-center font-medium">
 				<h1>Reviews</h1>
+				u
 				<div class="flex flex-col items-center">
 					<span class="text-lg">4.7</span>
 					<Ratings ratings={4.7} />
@@ -44,7 +45,7 @@
 		</div>
 		<div class="mx-4 my-4 flex flex-col gap-2">
 			<!-- TODO: show real reviews -->
-			{#each Array(4) as _, i}
+			{#each Array(4) as _}
 				<div class="flex gap-2">
 					<img
 						src=""

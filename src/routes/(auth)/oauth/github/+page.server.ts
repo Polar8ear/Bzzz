@@ -1,4 +1,4 @@
-import { AuthProvider, addAuthCookieToRequest, github, lucia } from '$lib/server/auth'
+import { AuthProvider, addAuthCookieToRequest, github } from '$lib/server/auth'
 
 import { error, redirect, type RequestEvent } from '@sveltejs/kit'
 import { db } from '$lib/server/db'

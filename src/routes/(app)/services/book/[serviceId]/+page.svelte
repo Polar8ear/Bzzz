@@ -1,10 +1,8 @@
 <script lang="ts">
 	import TitleWithBack from '$lib/components/title-with-back.svelte'
 	import Button from '$lib/components/ui/button/button.svelte'
-	import Input from '$lib/components/ui/input/input.svelte'
 	import { createUploader } from '$lib/utils/uploadthing.js'
-	import { UploadButton, Uploader } from '@uploadthing/svelte'
-	import { fileFieldProxy } from 'sveltekit-superforms'
+	import { UploadButton } from '@uploadthing/svelte'
 
 	export let data
 	const { service } = data
@@ -109,8 +107,8 @@
 						<input type="text" class="hidden" name="image[{index}]" value={image.fileId} />
 					</div>
 				{/each}
+				<UploadButton {uploader} />
 			</div>
-			<Uploader {uploader} />
 			<h2 class="text-sm text-slate-500">Tell us more about the issue (optional)</h2>
 			<textarea name="details" id="details-input" rows="10" class="w-full bg-gray-100 p-2"
 			></textarea>

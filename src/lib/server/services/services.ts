@@ -1,5 +1,4 @@
-import { log } from '$lib/log'
-import { eq, sql } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { db } from '../db'
 import { services, servicesSearchQuery as servicesSearchIndex } from '../db/schema'
 
