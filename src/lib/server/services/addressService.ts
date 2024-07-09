@@ -1,4 +1,4 @@
-import { and, eq, type InferInsertModel } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import { db } from '../db'
 import { addresses } from '../db/schema'
 
