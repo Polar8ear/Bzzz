@@ -20,6 +20,10 @@ env:
   GOOGLE_CLIENT_ID: 'GOOGLE_CLIENT_ID-to-allow-type-check-to-work'
   GOOGLE_CLIENT_SECRET: 'GOOGLE_CLIENT_SECRET-to-allow-type-check-to-work'
   RESEND_API_KEY: 'RESEND_API_KEY-to-allow-type-check-to-work'
+  PUBLIC_GOOGLE_MAP_API_KEY: 'PUBLIC_GOOGLE_MAP_API_KEY-to-allow-type-check-to-work'
+  STRIPE_SECRET_KEY: 'STRIPE_SECRET_KEY-to-allow-type-check-to-work'
+  PUBLIC_STRIPE_PUBLISHABLE_KEY: 'PUBLIC_STRIPE_PUBLISHABLE_KEY-to-allow-type-check-to-work'
+  STRIPE_WEBHOOK_ENDPOINT_SECRET: 'STRIPE_WEBHOOK_ENDPOINT_SECRET-to-allow-type-check-to-work'
 
 jobs:
   lint:
