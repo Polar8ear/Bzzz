@@ -18,8 +18,14 @@
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
+		"@iconify-json/carbon": "^1.1.36",
 		"@iconify-json/fa6-regular": "^1.1.20",
 		"@iconify-json/fa6-solid": "^1.1.22",
+		"@iconify-json/gg": "^1.1.9",
+		"@iconify-json/icon-park-outline": "^1.1.15",
+		"@iconify-json/lucide": "^1.1.198",
+		"@iconify-json/material-symbols": "^1.1.83",
+		"@iconify-json/material-symbols-light": "^1.1.23",
 		"@iconify-json/ph": "^1.1.13",
 		"@playwright/test": "^1.45.1",
 		"@sveltejs/adapter-auto": "^3.2.2",
