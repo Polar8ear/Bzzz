@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ErrorMessage from '$lib/components/error-message.svelte'
 	import { Button } from '$lib/components/ui/button'
 	import { Input } from '$lib/components/ui/input'
 	import { Label } from '$lib/components/ui/label'
@@ -74,6 +75,7 @@
 									autocomplete="password"
 									autocorrect="off"
 									bind:value={$form.password}
+									aria-errormessage={$errors.password ? 'password-error' : undefined}
 									aria-invalid={$errors.password ? 'true' : undefined}
 									{...$constraints.password}
 								/>
@@ -91,7 +93,7 @@
 									</button>
 								</div>
 							</div>
-							{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
+							<ErrorMessage name="password" errors={$errors.password} />
 						</div>
 						<Button type="submit">Sign In with Email</Button>
 					</div>

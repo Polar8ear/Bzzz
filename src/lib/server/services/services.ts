@@ -33,3 +33,9 @@ export const findServiceById = async (serviceId: string) => {
 		},
 	})
 }
+
+export const serviceService = {
+	searchServices,
+	recommendServices,
+	findServiceById,
+}

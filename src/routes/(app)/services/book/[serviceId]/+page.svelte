@@ -1,62 +1,85 @@
 <script lang="ts">
 	import TitleWithBack from '$lib/components/title-with-back.svelte'
 	import Button from '$lib/components/ui/button/button.svelte'
-	import { createUploader } from '$lib/utils/uploadthing.js'
-	import { UploadButton } from '@uploadthing/svelte'
+	import { createUploadThing } from '$lib/utils/uploadthing.js'
+	import PlusIcon from 'virtual:icons/ph/plus-circle'
+	import SpinnerIcon from 'virtual:icons/ph/spinner-gap'
+	import { convertAddress } from '$lib/utils/addressUtil.js'
+	import { Label } from '$lib/components/ui/label/index.js'
+	import SuperDebug, { dateProxy, superForm } from 'sveltekit-superforms'
+	import ErrorMessage from '$lib/components/error-message.svelte'
+	import { onMount } from 'svelte'
 
 	export let data
+
+	const { form, constraints, errors, enhance, message } = superForm(data.form, {
+		resetForm: false,
+
+		onSubmit: async ({ formData }) => {
+			const startAt = formData.get('startAt')
+			if (startAt == null) throw new Error('Start At is missing')
+
+			const endAt = formData.get('endAt')
+			if (endAt == null) throw new Error('End At is missing')
+
+			const utcStartAt = new Date(startAt.toString()).toISOString()
+			const utcEndAt = new Date(endAt.toString()).toISOString()
+
+			formData.set('startAt', utcStartAt)
+			formData.set('endAt', utcEndAt)
+
+			return data
+		},
+	})
+
+	let proxiedStartAt
+
+	let proxiedEndAt
+
+	$: console.log('received', {
+		startAt: $form.startAt,
+		endAt: $form.endAt,
+	})
+	onMount(() => {
+		proxiedStartAt = dateProxy(form, 'startAt', {
+			format: 'datetime-local',
+		})
+
+		proxiedEndAt = dateProxy(form, 'endAt', {
+			format: 'datetime-local',
+		})
+	})
+
 	const { service } = data
-	const SERVICE_CHARGE = 2000
+	const SERVICE_CHARGE_RATE = 0.1
 
-	$: unitCount = 1
-	$: totalPrice = service.price * unitCount
-	$: totalPriceWithCharge = totalPrice + SERVICE_CHARGE
+	$: totalPrice = service.price * $form.unitCount
+	$: serviceCharge = totalPrice * SERVICE_CHARGE_RATE
+	$: totalPriceWithCharge = totalPrice + serviceCharge
 
-	type Image = {
-		key: string
-		url: string
-		fileId: string
+	if ($form.imageFileIds.length !== $form.imageKeys.length) {
+		throw new Error('Image file ids and keys are not in sync')
 	}
-	let images: Image[] = [
-		{
-			key: 'b3d30e50-69c0-458c-a978-b2436f48a0b6-xsvdpx.png',
-			url: 'https://utfs.io/f/b3d30e50-69c0-458c-a978-b2436f48a0b6-xsvdpx.png',
-			fileId: '01J28C646E1PTCAVJCXMTTNSVR',
-		},
-		{
-			key: 'e2171bc5-3982-42ce-9f29-2c8bf7ceb960-cf2fvo.png',
-			url: 'https://utfs.io/f/e2171bc5-3982-42ce-9f29-2c8bf7ceb960-cf2fvo.png',
-			fileId: '01J28C6495HHAMJEFM0C9V53SD',
-		},
-		{
-			key: 'f087bc37-0b29-4ee6-930c-32ab75f2c817-v31iae.png',
-			url: 'https://utfs.io/f/f087bc37-0b29-4ee6-930c-32ab75f2c817-v31iae.png',
-			fileId: '01J28C64D4D9ZPX36V6EMFE0V1',
-		},
-		{
-			key: '8387c1d2-d19f-4bc1-9327-fa8f9b3d3ecd-fuxc1g.png',
-			url: 'https://utfs.io/f/8387c1d2-d19f-4bc1-9327-fa8f9b3d3ecd-fuxc1g.png',
-			fileId: '01J28C64J9H16CRM3G6J1TYRN7',
-		},
-		{
-			key: '0cc0489f-aef6-43fb-81a4-7df53b27b8ec-ciol5i.png',
-			url: 'https://utfs.io/f/0cc0489f-aef6-43fb-81a4-7df53b27b8ec-ciol5i.png',
-			fileId: '01J28C65J6Z8NFWNRDW7FVY6DN',
-		},
-	]
 
-	const uploader = createUploader('serviceImageUploader', {
+	$: images = $form.imageFileIds.map((fileId, index) => {
+		const key = $form.imageKeys[index]
+		return {
+			key,
+			fileId,
+			url: `https://utfs.io/f/${key}`,
+		}
+	})
+
+	const { startUpload, isUploading } = createUploadThing('serviceImageUploader', {
 		onClientUploadComplete: (res) => {
-			images = [
-				...images,
+			$form.imageFileIds = [
+				...$form.imageFileIds,
 				...res.map((file) => {
-					if (file.serverData == null) {
-						throw new Error('Server data is missing')
-					}
-
-					return { key: file.key, url: file.url, fileId: file.serverData?.fileId }
+					if (file.serverData == null) throw new Error('Upload Thing Server data is missing')
+					return file.serverData?.fileId
 				}),
 			]
+			$form.imageKeys = [...$form.imageKeys, ...res.map((file) => file.key)]
 		},
 		onUploadError: (error: Error) => {
 			alert(error)
@@ -66,37 +89,45 @@
 	let page = 2
 </script>
 
+<svelte:head>
+	<title>Book {data.service.name ?? 'Service'}</title>
+	<meta name="description" content="Book {data.service.name ?? 'Service'}" />
+</svelte:head>
+<SuperDebug data={$form} />
 <TitleWithBack
 	title={data.service.name ?? 'Service'}
 	previousPage={page === 1 ? `/services/${service.id}` : () => (page = 1)}
 	previousPageDescription="Back to {service.name} details page"
 />
-
-<form action="?pay" method="POST" class="flex min-h-screen flex-col">
+<form action="?" method="POST" class="flex min-h-screen flex-col" use:enhance>
+	{#if $message != null}
+		<p class="">{JSON.stringify($message)}</p>
+	{/if}
 	<div class={page !== 1 ? 'hidden' : 'contents'}>
-		<div class="mx-auto w-full max-w-prose">
+		<div class="mx-auto w-full max-w-prose px-4">
 			<h2 class="text-sm text-slate-500">What services do you need</h2>
 			<div class="flex items-baseline justify-between">
 				<span>{service.name}</span>
 				<div class="flex items-center gap-4">
 					<Button
-						disabled={unitCount === 1}
+						disabled={$form.unitCount === 1}
 						class="bg-slate-100 p-2 text-slate-500"
-						on:click={() => (unitCount = Math.max(1, unitCount - 1))}
+						on:click={() => ($form.unitCount = Math.max(1, $form.unitCount - 1))}
 					>
 						-
 					</Button>
-					<span>{unitCount}</span>
+					<span>{$form.unitCount}</span>
+					<input type="number" bind:value={$form.unitCount} name="unitCount" class="hidden" />
 					<Button
 						class="bg-slate-100 p-2 text-slate-500"
-						on:click={() => (unitCount = Math.max(1, unitCount + 1))}
+						on:click={() => ($form.unitCount = Math.max(1, $form.unitCount + 1))}
 					>
 						+
 					</Button>
 				</div>
 			</div>
 			<h2 class="text-sm text-slate-500">Upload Photos</h2>
-			<div class="flex flex-wrap gap-2">
+			<div class="my-2 flex flex-wrap gap-x-4 gap-y-2">
 				{#each images as image, index}
 					<div>
 						<img
@@ -107,11 +138,43 @@
 						<input type="text" class="hidden" name="image[{index}]" value={image.fileId} />
 					</div>
 				{/each}
-				<UploadButton {uploader} />
+				<div class="aspect-square h-32 rounded-md border border-slate-300 text-slate-500">
+					<label
+						for="images-input"
+						class="grid h-full w-full place-content-center text-4xl hover:opacity-70"
+					>
+						{#if $isUploading}
+							<SpinnerIcon class="animate-spin" />
+						{:else}
+							<PlusIcon />
+						{/if}
+					</label>
+					<input
+						multiple
+						accept="image/*"
+						id="images-input"
+						type="file"
+						disabled={$isUploading}
+						class="hidden"
+						on:change={async (e) => {
+							const files = e.currentTarget.files
+							if (!files || files.length <= 0) return
+							await startUpload(Array.from(files))
+						}}
+					/>
+				</div>
 			</div>
 			<h2 class="text-sm text-slate-500">Tell us more about the issue (optional)</h2>
-			<textarea name="details" id="details-input" rows="10" class="w-full bg-gray-100 p-2"
-			></textarea>
+			<textarea
+				name="details"
+				id="details-input"
+				rows="10"
+				class="w-full bg-gray-100 p-2"
+				bind:value={$form.details}
+				aria-invalid={$errors.details != null ? 'true' : 'false'}
+				{...$constraints.details}
+			/>
+			<ErrorMessage name="details" errors={$errors.details} />
 		</div>
 		<div
 			class="sticky bottom-14 mt-auto flex flex-col gap-6 rounded-t-lg bg-slate-100 px-4 py-5 md:flex-row"
@@ -131,20 +194,62 @@
 	</div>
 
 	<div class={page !== 2 ? 'hidden' : 'contents'}>
-		<div class="mx-auto w-full max-w-prose">
+		<div class="mx-auto w-full max-w-prose px-4">
 			<h2 class="text-sm text-slate-500">Address</h2>
+			<select
+				id="address-select"
+				name="addressId"
+				class=" h-12 w-full text-ellipsis border border-slate-300 px-2"
+				bind:value={$form.addressId}
+				{...$constraints.addressId}
+			>
+				{#each data.addresses as address}
+					<option
+						value={address.id}
+						label={convertAddress(address)}
+						selected={$form.addressId === address.id}
+					/>
+				{/each}
+			</select>
+
 			<h2 class="text-sm text-slate-500">Appointment Time</h2>
+			<div class="flex flex-col items-stretch gap-2">
+				<Label id="start-at-input">Start At</Label>
+				<input
+					type="datetime-local"
+					name="startAt"
+					id="start-at-input"
+					class="h-12 w-full border border-slate-300 px-2"
+					bind:value={$proxiedStartAt}
+					aria-errormessage={$errors.startAt != null ? 'start-at-error' : undefined}
+					aria-invalid={$errors.startAt != null ? 'true' : 'false'}
+					{...$constraints.startAt}
+				/>
+				<ErrorMessage name="start-at" errors={$errors.startAt} />
+				<Label id="end-at-input">End At</Label>
+				<input
+					type="datetime-local"
+					name="endAt"
+					id="end-at-input"
+					class="h-12 w-full border border-slate-300 px-2"
+					bind:value={$proxiedEndAt}
+					aria-errormessage={$errors.endAt != null ? 'end-at-error' : undefined}
+					aria-invalid={$errors.endAt != null ? 'true' : 'false'}
+					{...$constraints.endAt}
+				/>
+				<ErrorMessage name="end-at" errors={$errors.endAt} />
+			</div>
 			<h2 class="text-sm text-slate-500">Request Summary</h2>
 			<div class="flex items-baseline justify-between">
 				<span>{service.name}</span>
 				<div class="flex items-center gap-4">
-					<span>{unitCount}</span>
+					<span>{$form.unitCount}</span>
 				</div>
 			</div>
 			<h2 class="text-sm text-slate-500">Price Details</h2>
 			<div class="flex items-baseline justify-between">
 				<span>Platform Fee</span>
-				<span>RM {(SERVICE_CHARGE / 100).toFixed(2)}</span>
+				<span>RM {(serviceCharge / 100).toFixed(2)}</span>
 			</div>
 			<div class="flex items-baseline justify-between">
 				<span>Service Fee</span>

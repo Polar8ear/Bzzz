@@ -41,5 +41,6 @@ export class Logger {
 
 export const errorLogger = new Logger('error')
 export const authLogger = new Logger('auth')
+export const paymentLogger = new Logger('payment')
 
 export const log = new Logger('general')

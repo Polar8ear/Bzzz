@@ -8,6 +8,13 @@ const findAddressesByUserId = async (userId: string) => {
 	})
 }
 
+const findAddressById = async (addressId: string) => {
+	console.log('addressId', addressId)
+	return await db.query.addresses.findFirst({
+		where: (fields, { eq }) => eq(fields.id, addressId),
+	})
+}
+
 type AddressDraft = typeof addresses.$inferInsert
 
 const createAddress = async (address: AddressDraft) => {
@@ -17,6 +24,7 @@ const createAddress = async (address: AddressDraft) => {
 }
 
 export const addressService = {
+	findAddressById,
 	findAddressesByUserId,
 	createAddress,
 }

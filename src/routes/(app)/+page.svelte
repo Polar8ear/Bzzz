@@ -16,7 +16,6 @@
 		await goto(`?q=${$form.q}`, {
 			keepFocus: true,
 		})
-		searchInput.focus()
 	}, 300)
 </script>
 

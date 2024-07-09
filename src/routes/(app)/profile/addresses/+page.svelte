@@ -1,5 +1,6 @@
 <script>
 	import TitleWithBack from '$lib/components/title-with-back.svelte'
+	import { convertAddress } from '$lib/utils/addressUtil'
 	import PlusIcon from 'virtual:icons/ph/plus-circle'
 	export let data
 	const { addresses } = data
@@ -21,11 +22,7 @@
 		{#each addresses as address}
 			<li class="flex flex-col gap-2 rounded-sm bg-slate-100 p-4">
 				<p aria-label="Address">
-					{address.line1},
-					{address.line2 != null ? `${address.line2}, ` : ''}
-					{address.line3 != null ? `${address.line3}, ` : ''}
-					{address.postcode}
-					{address.city}, {address.state}
+					{convertAddress(address)}
 				</p>
 				<span aria-label="Coordinate">({address.coordinate.x}, {address.coordinate.y})</span>
 			</li>
