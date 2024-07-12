@@ -1,6 +1,14 @@
-import type { addresses } from '$lib/server/db/schema'
+type Addresss = {
+	line1: string
+	line2?: string
+	line3?: string
+	postcode: string
+	city: string
+	state: string
+	country: string
+}
 
-const convertAddress = (address: typeof addresses.$inferSelect): string => {
+const convertAddress = (address: Addresss): string => {
 	const line2 = address.line2 ? `${address.line2}, ` : ''
 	const line3 = address.line3 ? `${address.line3}, ` : ''
 
