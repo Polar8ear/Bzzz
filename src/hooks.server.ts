@@ -4,10 +4,16 @@ import {
 	addBlankAuthCookieToRequest,
 	lucia,
 } from '$lib/server/auth'
-import type { Handle, HandleServerError } from '@sveltejs/kit'
+import { error, type Handle, type HandleServerError } from '@sveltejs/kit'
 import { dev } from '$app/environment'
 
 const authHookLogger = new Logger('auth-hook')
+
+const isProtectedPath = (path: string) => {
+	if (path.startsWith('/admin')) {
+		return true
+	}
+}
 
 export const handle: Handle = async ({ event, resolve }) => {
 	authHookLogger.debug('handling request')
@@ -16,6 +22,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		authHookLogger.debug('no session id, setting to null')
 		event.locals.user = null
 		event.locals.session = null
+		if (isProtectedPath(event.url.pathname)) {
+			throw error(401, 'Unauthorized')
+		}
+
 		return resolve(event)
 	}
 
@@ -29,6 +39,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 		addBlankAuthCookieToRequest(event)
 	}
 	authHookLogger.debug('setting user and session')
+
+	if (isProtectedPath(event.url.pathname)) {
+		if (!user || !user.isAdmin) {
+			throw error(401, 'Unauthorized')
+		}
+	}
+
 	event.locals.user = user
 	event.locals.session = session
 	return resolve(event)

@@ -12,6 +12,7 @@ import {
 	jsonb,
 	smallint,
 	index,
+	boolean,
 } from 'drizzle-orm/pg-core'
 import { ulid } from 'ulid'
 
@@ -83,6 +84,7 @@ export interface DatabaseUserAttributes {
 	email: string
 	emailVerifiedAt?: Date
 	fullName?: string
+	isAdmin: boolean
 }
 
 export const users = pgTable('users', {
@@ -103,6 +105,7 @@ export const users = pgTable('users', {
 	}),
 	emailVerifiedAt: timestamp('email_verified_at'),
 	defaultAddressId: id('default_address_id').references((): AnyPgColumn => addresses.id),
+	isAdmin: boolean('is_admin').notNull().default(false),
 	...createdAtUpdatedAt,
 })
 
@@ -206,6 +209,7 @@ export const servicesRelations = relations(services, ({ one, many }) => ({
 		fields: [services.imageFileId],
 		references: [files.id],
 	}),
+	reviews: many(reviews),
 }))
 
 export const categories = pgTable('categories', {
