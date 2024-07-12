@@ -16,25 +16,46 @@ const extractAuthSession = (cookie: string) => {
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
-	serviceImageUploader: f({ image: { maxFileSize: '4MB', acl: 'public-read', maxFileCount: 10 } })
-		// Set permissions and file types for this FileRoute
+	imageUploader: f({ image: { maxFileSize: '4MB', acl: 'public-read' } })
 		.middleware(async ({ req }) => {
-			// This code runs on your server before upload
 			const cookieString = req.headers.get('cookie')
 
 			if (cookieString == null) throw new Error('No cookie')
 
 			const authSessionId = extractAuthSession(cookieString)
-
 			if (authSessionId == null) throw new Error('No auth session')
 
 			const { user } = await lucia.validateSession(authSessionId)
-
 			if (user == null) throw new Error('No user')
 
-			// If you throw, the user will not be able to upload
+			return {
+				userId: user.id,
+			}
+		})
+		.onUploadComplete(async ({ metadata, file }) => {
+			try {
+				const [dbFile] = await fileService.createFile(file.key, 'uploadthing', metadata.userId)
+				console.log('file url', file.url)
 
-			// Whatever is returned here is accessible in onUploadComplete as `metadata`
+				return {
+					fileId: dbFile.id,
+				}
+			} catch (error) {
+				utapi.deleteFiles([file.key])
+			}
+		}),
+	serviceImageUploader: f({ image: { maxFileSize: '4MB', acl: 'public-read', maxFileCount: 10 } })
+		.middleware(async ({ req }) => {
+			const cookieString = req.headers.get('cookie')
+
+			if (cookieString == null) throw new Error('No cookie')
+
+			const authSessionId = extractAuthSession(cookieString)
+			if (authSessionId == null) throw new Error('No auth session')
+
+			const { user } = await lucia.validateSession(authSessionId)
+			if (user == null) throw new Error('No user')
+
 			return {
 				userId: user.id,
 			}
