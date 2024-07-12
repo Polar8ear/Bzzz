@@ -22,6 +22,7 @@ export const lucia = new Lucia(adapter, {
 	getUserAttributes(attributes) {
 		return {
 			email: attributes.email,
+			isAdmin: attributes.isAdmin,
 		}
 	},
 	sessionExpiresIn: new TimeSpan(1, 'w'),
