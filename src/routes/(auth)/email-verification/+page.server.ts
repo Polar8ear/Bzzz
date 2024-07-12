@@ -37,5 +37,5 @@ export const load = async ({ url, locals }) => {
 
 	await verifyEmailToken(retrievedToken)
 
-	return redirect(303, '/')
+	return redirect(303, '/dashboard')
 }
