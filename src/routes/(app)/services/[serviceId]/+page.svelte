@@ -2,19 +2,34 @@
 	export let data
 	import Ratings from '$lib/components/ratings.svelte'
 	import TitleWithBack from '$lib/components/title-with-back.svelte'
+	import { getImageUrl } from '$lib/utils/image'
+
+	const reviews = [
+		{ rating: 5, comment: 'My AC runs like new after their thorough wash service!' },
+		{ rating: 5, comment: 'Highly recommend for anyone wanting to improve air quality at home.' },
+		{ rating: 4.5, comment: 'Saved me money on repairs by keeping my AC in top shape!' },
+		{ rating: 4, comment: 'Efficient service that keeps my energy bills low.' },
+		{ rating: 3.5, comment: 'Professional and reliable - my go-to for AC maintenance!' },
+	]
 </script>
+
+<svelte:head>
+	<title>{data.service.name ?? 'Service'}</title>
+	<meta name="description" content={data.service.name ?? 'Service'} />
+</svelte:head>
 
 <article class="flex min-h-screen flex-col items-center">
 	<TitleWithBack
 		title={data.service.name ?? 'Service'}
-		previousPage="/"
+		previousPage="/services"
 		previousPageDescription="Back to search services page"
 	/>
 	<img
-		src={data.service.image?.key ??
-			'https://png.pngtree.com/png-clipart/20220603/original/pngtree-workplace-word-concepts-banner-png-image_7904754.png'}
+		src={data.service.image != null ? getImageUrl(data.service.image) : undefined}
 		alt="{data.service.name} service image"
-		class="max-h-52 w-full bg-slate-400 object-cover"
+		class="aspect-video max-h-52 w-full bg-slate-400 object-cover"
+		height={208}
+		width={164}
 	/>
 
 	{#if data.service.details}
@@ -28,7 +43,6 @@
 		<div class="mx-4 flex gap-4">
 			<div class="flex flex-col items-center justify-center font-medium">
 				<h1>Reviews</h1>
-				u
 				<div class="flex flex-col items-center">
 					<span class="text-lg">4.7</span>
 					<Ratings ratings={4.7} />
@@ -36,16 +50,16 @@
 				</div>
 			</div>
 			<div class="flex flex-wrap items-start gap-2">
-				{#each Array(5) as _, i}
+				{#each ['Clean-up', 'Efficient', 'Professional', 'High-quality', 'Customer satisfaction'] as comment, i}
 					<div class="rounded-md bg-gray-300 px-4 py-2">
-						<span>{'a'.repeat(((i + 6) % 5) ** Math.random() * 6)}</span>
+						<span>{comment}</span>
 					</div>
 				{/each}
 			</div>
 		</div>
 		<div class="mx-4 my-4 flex flex-col gap-2">
 			<!-- TODO: show real reviews -->
-			{#each Array(4) as _}
+			{#each reviews as review}
 				<div class="flex gap-2">
 					<img
 						src=""
@@ -53,9 +67,9 @@
 						class="aspect-square h-8 rounded-full border border-gray-200 bg-black object-cover"
 					/>
 					<div>
-						<Ratings ratings={5} />
+						<Ratings ratings={review.rating} />
 						<p class="line-clamp-2 max-w-prose text-ellipsis">
-							It was a very pleasant experience. Professionals arrive on time and fix is a breeze.
+							{review.comment}
 						</p>
 					</div>
 				</div>

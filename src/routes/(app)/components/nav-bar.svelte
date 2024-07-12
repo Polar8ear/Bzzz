@@ -1,8 +1,10 @@
 <script>
 	import HomeIcon from 'virtual:icons/carbon/home'
 	import DrillIcon from '$lib/icons/drill-icon.svelte'
-	import MailIcon from 'virtual:icons/material-symbols/mail-outline'
 	import ProfileIcon from 'virtual:icons/gg/profile'
+	// import MailIcon from 'virtual:icons/material-symbols/mail-outline'
+
+	export let isLoggedIn = false
 </script>
 
 <div class="font- sticky bottom-0 block w-full bg-slate-100">
@@ -13,17 +15,17 @@
 			>
 		</li>
 		<li class="px-4 py-4">
-			<a class="flex items-center justify-center" href="/"
+			<a class="flex items-center justify-center" href="/services"
 				><span class="sr-only">Search services</span><DrillIcon /></a
 			>
 		</li>
-		<li class="px-4 py-4">
+		<!-- <li class="px-4 py-4">
 			<a class="flex items-center justify-center" href="/messages"
 				><span class="sr-only">Chat</span><MailIcon /></a
 			>
-		</li>
+		</li> -->
 		<li class="px-4 py-4">
-			<a class="flex items-center justify-center" href="/profile"
+			<a class="flex items-center justify-center" href={isLoggedIn ? '/profile' : '/sign-up'}
 				><span class="sr-only">Profile</span><ProfileIcon /></a
 			>
 		</li>

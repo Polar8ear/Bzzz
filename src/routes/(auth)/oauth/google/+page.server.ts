@@ -90,5 +90,5 @@ export async function load(event) {
 
 	addAuthCookieToRequest(event, oAuthGoogleAccount.userId)
 
-	return redirect(302, '/')
+	return redirect(302, '/dashboard')
 }

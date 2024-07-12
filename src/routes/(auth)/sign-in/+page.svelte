@@ -14,7 +14,7 @@
 <div
 	class="container relative flex h-[800px] min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
 >
-	<div class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+	<div class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
 		<div
 			class="absolute inset-0 bg-cover"
 			style="
@@ -25,20 +25,16 @@
 		<div class="relative z-20 mt-auto">
 			<blockquote class="space-y-2">
 				<p class="text-lg">
-					&ldquo;This library has saved me countless hours of work and helped me deliver stunning
-					designs to my clients faster than ever before. Highly recommended!&rdquo;
+					&ldquo;This system has saved me from a sudden plumbing issue. Highly Recommended&rdquo;
 				</p>
-				<footer class="text-sm">Sofia Davis</footer>
+				<footer class="text-sm">Alia</footer>
 			</blockquote>
 		</div>
 	</div>
 	<div class="lg: lg:p-8">
 		<div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
 			<div class="flex flex-col space-y-2 text-center">
-				<h1 class="text-2xl font-semibold tracking-tight">Create an account</h1>
-				<p class="text-sm text-muted-foreground">
-					Enter your email and password below to create your account
-				</p>
+				<h1 class="text-2xl font-semibold tracking-tight">Sign into your account</h1>
 			</div>
 			<div class="grid gap-6">
 				{#if $message != null}
@@ -96,6 +92,7 @@
 							<ErrorMessage name="password" errors={$errors.password} />
 						</div>
 						<Button type="submit">Sign In with Email</Button>
+						<a href="/sign-up" class="text-center text-xs opacity-80">Create account</a>
 					</div>
 				</form>
 				<div class="relative">

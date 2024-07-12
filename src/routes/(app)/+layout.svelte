@@ -1,5 +1,7 @@
 <script lang="ts">
 	import NavBar from './components/nav-bar.svelte'
+	export let data
+	const isLoggedIn = data.user != null
 </script>
 
 <div class="flex min-h-screen flex-col">
@@ -14,5 +16,5 @@
 	<footer class="rounded-t-lg bg-slate-800 py-6 text-center text-slate-300 lg:pb-6">
 		<p class="font-bold">Bzzz Limited</p>
 	</footer>
-	<NavBar />
+	<NavBar {isLoggedIn} />
 </div>

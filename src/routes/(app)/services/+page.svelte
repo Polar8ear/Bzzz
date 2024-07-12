@@ -4,6 +4,7 @@
 	import { debounce } from '$lib/utils/debounce'
 	import { goto } from '$app/navigation'
 	import MagnifyingGlassIcon from 'virtual:icons/ph/magnifying-glass-bold'
+	import { getImageUrl } from '$lib/utils/image.js'
 	export let data
 	$: services = data.services
 	const { form, errors, constraints } = superForm(data.form, {
@@ -42,9 +43,10 @@
 	{#each services ?? [] as service (service.id)}
 		<a href="services/{service.id}" class="m-2 flex h-16 items-center gap-2.5 hover:opacity-80">
 			<img
-				src={service.image?.key || 'https://cdn-icons-png.flaticon.com/512/6794/6794826.png'}
+				src={service.image != null ? getImageUrl(service.image) : undefined}
 				alt="{service.name} Image"
 				class="aspect-square h-12 rounded-full border border-gray-200 object-scale-down"
+				height="48"
 			/>
 			<span>{service.name}</span>
 		</a>

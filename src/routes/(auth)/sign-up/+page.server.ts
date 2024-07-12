@@ -96,7 +96,7 @@ export const actions = {
 
 		if (emailResponse.error) {
 			errorLogger.error('email action', emailResponse.error)
-			return redirect(302, '/')
+			return redirect(302, '/dashboard')
 		}
 
 		return redirect(302, '/email-verification')

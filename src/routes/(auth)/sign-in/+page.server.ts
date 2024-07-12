@@ -54,6 +54,6 @@ export const actions = {
 
 		await addAuthCookieToRequest(event, user.id)
 
-		redirect(302, '/')
+		redirect(302, '/dashboard')
 	},
 } satisfies Actions

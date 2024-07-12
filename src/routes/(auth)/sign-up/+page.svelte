@@ -14,7 +14,7 @@
 <div
 	class="container relative flex h-[800px] min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
 >
-	<div class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+	<div class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
 		<div
 			class="absolute inset-0 bg-cover"
 			style="
@@ -25,10 +25,9 @@
 		<div class="relative z-20 mt-auto">
 			<blockquote class="space-y-2">
 				<p class="text-lg">
-					&ldquo;This library has saved me countless hours of work and helped me deliver stunning
-					designs to my clients faster than ever before. Highly recommended!&rdquo;
+					&ldquo;This system has saved me from a sudden plumbing issue. Highly Recommended&rdquo;
 				</p>
-				<footer class="text-sm">Sofia Davis</footer>
+				<footer class="text-sm">Alia</footer>
 			</blockquote>
 		</div>
 	</div>
@@ -94,7 +93,8 @@
 							</div>
 							{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
 						</div>
-						<Button type="submit">Sign In with Email</Button>
+						<Button type="submit">Sign Up with Email</Button>
+						<a href="/sign-in" class="text-center text-xs opacity-80">Sign in instead</a>
 					</div>
 				</form>
 				<div class="relative">

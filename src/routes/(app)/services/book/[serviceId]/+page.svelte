@@ -86,14 +86,13 @@
 		},
 	})
 
-	let page = 2
+	let page = 1
 </script>
 
 <svelte:head>
 	<title>Book {data.service.name ?? 'Service'}</title>
 	<meta name="description" content="Book {data.service.name ?? 'Service'}" />
 </svelte:head>
-<SuperDebug data={$form} />
 <TitleWithBack
 	title={data.service.name ?? 'Service'}
 	previousPage={page === 1 ? `/services/${service.id}` : () => (page = 1)}
@@ -134,6 +133,7 @@
 							src={image.url}
 							alt="Request image {index + 1}"
 							class="aspect-square h-32 rounded-md object-cover"
+							height="128"
 						/>
 						<input type="text" class="hidden" name="image[{index}]" value={image.fileId} />
 					</div>
