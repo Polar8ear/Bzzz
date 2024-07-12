@@ -20,10 +20,10 @@
 	{#each Array(filledStars) as _}
 		<FilledStarIcon />
 	{/each}
-	{#each Array(hollowStar) as _}
-		<HollowStarIcon />
-	{/each}
 	{#if halfFilledStar}
 		<HalfFilledStarIcon />
 	{/if}
+	{#each Array(hollowStar) as _}
+		<HollowStarIcon />
+	{/each}
 </div>
