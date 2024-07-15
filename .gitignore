@@ -11,5 +11,7 @@ vite.config.ts.timestamp-*
 .pnpm-store
 dev-dist
 
+/test-results
+
 # sst
 .sst
