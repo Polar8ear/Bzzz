@@ -29,7 +29,7 @@
 	const { form, enhance, constraints, errors } = superForm(data.form, {})
 </script>
 
-<div class="mx-auto max-w-lg px-4">
+<main class="mx-auto max-w-lg flex-grow px-4">
 	<form method="POST" class="flex flex-col gap-4" use:enhance>
 		<h2 class="mt-4 text-2xl font-bold">Create Service Form</h2>
 		<div class="flex flex-col gap-1">
@@ -121,4 +121,4 @@
 			{/each}
 		</ul>
 	</section>
-</div>
+</main>

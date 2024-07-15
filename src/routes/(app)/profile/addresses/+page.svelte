@@ -11,7 +11,7 @@
 	previousPage="/profile"
 	previousPageDescription="Back to profile page"
 />
-<article class="mx-auto flex min-h-screen max-w-md flex-col px-4">
+<main class="mx-auto flex w-full max-w-lg flex-col px-4">
 	<div class="my-2 flex items-center justify-between">
 		<span class="opacity-50">{addresses.length} addresses</span>
 		<a href="/profile/addresses/new"
@@ -32,4 +32,4 @@
 			</li>
 		{/each}
 	</ul>
-</article>
+</main>

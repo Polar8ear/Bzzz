@@ -39,7 +39,7 @@
 		/>
 	</div>
 </form>
-<article class="mx-4 divide-y divide-gray-300">
+<main class="mx-4 flex-grow divide-y divide-gray-300">
 	{#each services ?? [] as service (service.id)}
 		<a href="services/{service.id}" class="m-2 flex h-16 items-center gap-2.5 hover:opacity-80">
 			<img
@@ -53,4 +53,4 @@
 	{:else}
 		<div class="mx-2 text-center py-8">No services found</div>
 	{/each}
-</article>
+</main>

@@ -94,7 +94,7 @@
 	previousPage={page === 1 ? `/services/${service.id}` : () => (page = 1)}
 	previousPageDescription="Back to {service.name} details page"
 />
-<form action="?" method="POST" class="flex min-h-screen flex-col" use:enhance>
+<form action="?" method="POST" class="flex flex-grow flex-col" use:enhance>
 	{#if $message != null}
 		<p class="">{JSON.stringify($message)}</p>
 	{/if}

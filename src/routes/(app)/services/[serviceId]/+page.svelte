@@ -18,18 +18,16 @@
 	<meta name="description" content={data.service.name ?? 'Service'} />
 </svelte:head>
 
-<article class="flex min-h-screen flex-col items-center">
-	<TitleWithBack
-		title={data.service.name ?? 'Service'}
-		previousPage="/services"
-		previousPageDescription="Back to search services page"
-	/>
+<TitleWithBack
+	title={data.service.name ?? 'Service'}
+	previousPage="/services"
+	previousPageDescription="Back to search services page"
+/>
+<main class="flex flex-col items-center">
 	<img
 		src={data.service.image != null ? getImageUrl(data.service.image) : undefined}
 		alt="{data.service.name} service image"
 		class="aspect-video max-h-52 w-full bg-slate-400 object-cover"
-		height={208}
-		width={164}
 	/>
 
 	{#if data.service.details}
@@ -85,4 +83,4 @@
 			>Book now</a
 		>
 	</div>
-</article>
+</main>

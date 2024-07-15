@@ -9,11 +9,9 @@
 		<p class="ml-5 text-center text-2xl font-bold">Bzzz</p>
 	</header>
 
-	<main class="flex-grow">
-		<slot />
-	</main>
+	<slot />
 
-	<footer class="rounded-t-lg bg-slate-800 py-6 text-center text-slate-300 lg:pb-6">
+	<footer class="mt-auto rounded-t-lg bg-slate-800 py-6 text-center text-slate-300 lg:pb-6">
 		<p class="font-bold">Bzzz Limited</p>
 	</footer>
 	<NavBar {isLoggedIn} />
