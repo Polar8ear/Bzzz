@@ -1,7 +1,7 @@
 type Addresss = {
 	line1: string
-	line2?: string
-	line3?: string
+	line2?: string | null
+	line3?: string | null
 	postcode: string
 	city: string
 	state: string
