@@ -36,10 +36,6 @@
 
 	let proxiedEndAt
 
-	$: console.log('received', {
-		startAt: $form.startAt,
-		endAt: $form.endAt,
-	})
 	onMount(() => {
 		proxiedStartAt = dateProxy(form, 'startAt', {
 			format: 'datetime-local',
