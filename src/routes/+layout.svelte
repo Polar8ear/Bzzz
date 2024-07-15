@@ -3,11 +3,34 @@
 	import { pwaInfo } from 'virtual:pwa-info'
 	import { pwaAssetsHead } from 'virtual:pwa-assets/head'
 	import { setUser } from '$lib/stores/userStore'
+	import { onMount } from 'svelte'
 
 	$: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : ''
-	if (typeof window !== 'undefined') {
-		import('../pwa')
-	}
+
+	onMount(async () => {
+		if (pwaInfo) {
+			const { registerSW } = await import('virtual:pwa-register')
+			registerSW({
+				immediate: true,
+				onRegisteredSW(url, r) {
+					// uncomment following code if you want check for updates
+					r &&
+						setInterval(
+							() => {
+								console.log('Checking for sw update')
+								r.update()
+							},
+							1000 * 60 * 60,
+						)
+					console.log(`SW Registered from ${url}:`, r)
+				},
+				onRegisterError(error) {
+					console.log('SW registration error', error)
+				},
+			})
+		}
+	})
+
 	export let data
 	$: setUser(data.user)
 </script>

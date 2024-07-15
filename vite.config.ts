@@ -18,7 +18,8 @@ export default defineConfig({
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
 			devOptions: {
-				enabled: false,
+				enabled: process.env.NODE_ENV === 'development',
+				type: 'module',
 			},
 			pwaAssets: {
 				config: true,
