@@ -14,7 +14,7 @@
 <div
 	class="container relative flex h-[800px] min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
 >
-	<div class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+	<div class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
 		<div
 			class="absolute inset-0 bg-cover"
 			style="

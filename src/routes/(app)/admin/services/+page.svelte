@@ -2,7 +2,7 @@
 	import Button from '$lib/components/ui/button/button.svelte'
 	import Input from '$lib/components/ui/input/input.svelte'
 	import Label from '$lib/components/ui/label/label.svelte'
-	import { formFieldProxy, superForm } from 'sveltekit-superforms'
+	import { superForm } from 'sveltekit-superforms'
 	import { UploadButton } from '@uploadthing/svelte'
 	import { createUploader } from '$lib/utils/uploadthing.js'
 	import ErrorMessage from '$lib/components/error-message.svelte'

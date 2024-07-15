@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<div class="flex flex-wrap items-start gap-2">
-				{#each ['Clean-up', 'Efficient', 'Professional', 'High-quality', 'Customer satisfaction'] as comment, i}
+				{#each ['Clean-up', 'Efficient', 'Professional', 'High-quality', 'Customer satisfaction'] as comment}
 					<div class="rounded-md bg-gray-300 px-4 py-2">
 						<span>{comment}</span>
 					</div>
