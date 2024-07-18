@@ -18,7 +18,7 @@ export default defineConfig({
 		SvelteKitPWA({
 			registerType: 'autoUpdate',
 			devOptions: {
-				enabled: process.env.NODE_ENV === 'development',
+				enabled: false,
 				type: 'module',
 			},
 			pwaAssets: {
@@ -27,6 +27,7 @@ export default defineConfig({
 			workbox: {
 				mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
 				cleanupOutdatedCaches: true,
+				// importScripts
 			},
 			strategies: 'generateSW',
 			manifest: {

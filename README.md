@@ -18,3 +18,9 @@ The repo uses devcontainer for development
 docker compose up
 docker exec -it bzzz-sveltekit-1 /bin/sh
 ```
+
+## Stripe
+
+```bash
+stripe listen --forward-to localhost:5173/api/payment
+```

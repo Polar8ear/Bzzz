@@ -15,6 +15,11 @@ const queryClient = postgres({
 
 const db = drizzle(queryClient, { schema: schema })
 
+export type DB = typeof db
+export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
+
+export type DBorTransaction = DB | Transaction
+
 const adapter = new DrizzlePostgreSQLAdapter(db, schema.sessions, schema.users)
 
 export { adapter, db }

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TitleWithBack from '$lib/components/title-with-back.svelte'
 	import Button from '$lib/components/ui/button/button.svelte'
-	import { createUploadThing } from '$lib/utils/uploadthing.js'
+	import { createUploader, createUploadThing } from '$lib/utils/uploadthing.js'
 	import PlusIcon from 'virtual:icons/ph/plus-circle'
 	import SpinnerIcon from 'virtual:icons/ph/spinner-gap'
 	import { convertAddress } from '$lib/utils/addressUtil.js'
@@ -9,6 +9,7 @@
 	import { dateProxy, superForm } from 'sveltekit-superforms'
 	import ErrorMessage from '$lib/components/error-message.svelte'
 	import { onMount } from 'svelte'
+	import { UploadDropzone } from '@uploadthing/svelte'
 
 	export let data
 
@@ -67,6 +68,22 @@
 	})
 
 	const { startUpload, isUploading } = createUploadThing('serviceImageUploader', {
+		onClientUploadComplete: (res) => {
+			$form.imageFileIds = [
+				...$form.imageFileIds,
+				...res.map((file) => {
+					if (file.serverData == null) throw new Error('Upload Thing Server data is missing')
+					return file.serverData?.fileId
+				}),
+			]
+			$form.imageKeys = [...$form.imageKeys, ...res.map((file) => file.key)]
+		},
+		onUploadError: (error: Error) => {
+			alert(error)
+		},
+	})
+
+	const uploader = createUploader('serviceImageUploader', {
 		onClientUploadComplete: (res) => {
 			$form.imageFileIds = [
 				...$form.imageFileIds,
@@ -159,6 +176,7 @@
 						}}
 					/>
 				</div>
+				<UploadDropzone {uploader} />
 			</div>
 			<h2 class="text-sm text-slate-500">Tell us more about the issue (optional)</h2>
 			<textarea

@@ -20,7 +20,7 @@
 	}, 300)
 </script>
 
-<form method="GET">
+<form method="GET" class="[view-transition-name:search]">
 	<div class="relative mx-4">
 		<label for="search-input" class="absolute inset-y-0 left-2 flex items-center">
 			<MagnifyingGlassIcon />

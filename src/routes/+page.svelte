@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { getImageUrl } from '$lib/utils/image'
+
 	export let data
 	const isLoggedIn = data.user != null
 </script>
@@ -42,9 +44,19 @@
 		<h2 class="mb-8 text-center text-3xl font-bold">Our Services</h2>
 		<p class="mb-8 text-center text-lg">We provide a wide range of services to meet your needs.</p>
 		<div class="flex justify-center space-x-8">
-			<div class="flex h-20 w-20 items-center justify-center bg-gray-300">Icon 1</div>
-			<div class="flex h-20 w-20 items-center justify-center bg-gray-300">Icon 2</div>
-			<div class="flex h-20 w-20 items-center justify-center bg-gray-300">Icon 3</div>
+			{#each data.services as service}
+				{#if service.image != null}
+					<div
+						class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg bg-gray-300"
+					>
+						<img
+							src={getImageUrl(service.image)}
+							alt={service.name}
+							class="aspect-square w-full object-cover"
+						/>
+					</div>
+				{/if}
+			{/each}
 		</div>
 	</section>
 </div>

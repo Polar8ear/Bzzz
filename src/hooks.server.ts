@@ -4,7 +4,7 @@ import {
 	addBlankAuthCookieToRequest,
 	lucia,
 } from '$lib/server/auth'
-import { error, type Handle, type HandleServerError } from '@sveltejs/kit'
+import { error, type Handle, type HandleServerError, type RequestEvent } from '@sveltejs/kit'
 import { dev } from '$app/environment'
 
 const authHookLogger = new Logger('auth-hook')
@@ -15,8 +15,15 @@ const isProtectedPath = (path: string) => {
 	}
 }
 
+const setLanguage = (event: RequestEvent) => {
+	const language = event.request.headers.get('accept-language')?.split(',')[0] ?? 'en-US'
+	event.locals.locale = language
+}
+
 export const handle: Handle = async ({ event, resolve }) => {
 	authHookLogger.debug('handling request')
+	setLanguage(event)
+
 	const sessionId = event.cookies.get(lucia.sessionCookieName)
 	if (!sessionId) {
 		authHookLogger.debug('no session id, setting to null')
