@@ -44,13 +44,15 @@
 		<ul class="mx-auto flex max-w-lg flex-col flex-wrap items-stretch gap-4 p-4">
 			{#each data.requests as request}
 				<li class="flex flex-col gap-2 rounded-sm p-4 shadow-sm shadow-slate-500">
-					<h2 class="text-lg font-semibold">
-						{request.service.name}
-					</h2>
-					<span class="opacity-80" aria-label="starting at"
-						>{dateFormatter.format(request.startedAt)}</span
-					>
-					<span aria-label="status">{getStatusFromRequest(request)}</span>
+					<a href={`/requests/${request.id}`}>
+						<h2 class="text-lg font-semibold">
+							{request.service.name}
+						</h2>
+						<span class="opacity-80" aria-label="starting at"
+							>{dateFormatter.format(request.startedAt)}</span
+						>
+						<span aria-label="status">{getStatusFromRequest(request)}</span>
+					</a>
 				</li>
 			{/each}
 		</ul>

@@ -1,4 +1,4 @@
-import { requests } from '$lib/server/db/schema'
+import { requests, reviews } from '$lib/server/db/schema'
 import { eq, or } from 'drizzle-orm'
 import { db, type DBorTransaction } from '../db'
 
@@ -39,10 +39,35 @@ const markRequestAsTaken = async (
 		.where(eq(requests.id, requestId))
 }
 
+const findRequestById = async (requestId: string, trx: DBorTransaction = db) => {
+	return await trx.query.requests.findFirst({
+		where: eq(requests.id, requestId),
+		with: {
+			service: true,
+			address: true,
+			requestImages: true,
+			serviceProvider: true,
+			reviews: true,
+		},
+	})
+}
+
+const addReview = async (requestId: string, review: typeof reviews.$inferInsert) => {
+	return await db
+		.insert(reviews)
+		.values({
+			...review,
+			requestId,
+		})
+		.returning()
+}
+
 export const requestService = {
 	createRequest,
 	markRequestAsPaid,
 	findRequestsByUserId,
 	findRequestsByServices,
 	markRequestAsTaken,
+	findRequestById,
+	addReview,
 }

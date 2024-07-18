@@ -8,7 +8,11 @@ type Addresss = {
 	country: string
 }
 
-const convertAddress = (address: Addresss): string => {
+const convertAddress = (address: Addresss | null): string => {
+	if (address == null) {
+		return 'N/A'
+	}
+
 	const line2 = address.line2 ? `${address.line2}, ` : ''
 	const line3 = address.line3 ? `${address.line3}, ` : ''
 
